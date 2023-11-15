@@ -126,10 +126,35 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # -----------以下为新添加的设置------------
 
-# 在设置XtExam.models.User的avatar时添加，用于存储用户上传的头像
+# 在设置XtExam.models.UserProfile的avatar时添加，用于存储用户上传的头像
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# 在设置XtExam.models.User的avatar时添加，用于存储用户上传的头像
-STATICFILES_FINDERS = [
-    'django.contrib.staticfiles.finders.FileSystemFinder',
+
+# 配置日志
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+}
+
+AUTHENTICATION_BACKENDS = [
+    'XtExam.backends.EmailBackend',
+    'django.contrib.auth.backends.ModelBackend',
 ]
+
+# 关闭浏览器后需要重新登陆
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+# 使用会话
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SECURE = True    # 加密会话

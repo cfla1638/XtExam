@@ -1,0 +1,143 @@
+:root {
+    --background-color: rgb(255, 255, 255);
+    --success-color: #2ecc71;
+    --error-color: #e74c3c;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--background-color);
+    font-family: 'Open Sans', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+    font-size: 18px;
+    color: #4095E5;
+}
+
+.text {
+    font-size: 18px;
+}
+
+h2 {
+    text-align: center;
+}
+
+.right-box {
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+}
+
+.in-right {
+    border: 2px solid #BBBBBB;
+    border-radius: 12px;
+    background-color: var(--background-color);
+}
+
+.login-box {
+    margin: 0 0 20px;
+    padding: 10px 10px 20px 10px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.register-box {
+    padding: 10px 10px 10px 10px;
+    text-align: center;
+}
+
+.login-box form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+
+.form-control {
+    margin-bottom: 10px;
+    padding-bottom: 20px;
+    position: relative;
+}
+
+.form-control label {
+    color: #777;
+    margin-left: 10px;
+}
+
+.form-control input {
+    border: 2px solid #f0f0f0;
+    border-radius: 12px;
+    background-color: #EFEFEF;
+    display: inline-block;
+    width: 100%;
+    padding: 10px;
+    font-size: 18px;
+}
+
+.form-control input:focus {
+    outline: 0;
+    border-color: #777;
+}
+
+.form-control small {
+    color: var(--error-color);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    visibility: hidden;
+}
+
+.login-submit {
+    cursor: pointer;
+    background-color: #3498db;
+    border: 2px solid #3498db;
+    border-radius: 8px;
+    color: #fff;
+    display: block;
+    font-size: 18px;
+    padding: 5px;
+    margin-top: 20px;
+    width: 80%;
+}
+
+.login-submit:hover {
+    background-color: #2776ab;
+}
+
+/* 轮播图 */
+.slides {
+    position: relative;
+    width: 25%;
+    height: 500px;
+    overflow: hidden;
+    margin-right: 10%;
+    border-radius: 12px;
+}
+  
+.slides img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
+}
+
+.slides img.active {
+    opacity: 1;
+}
