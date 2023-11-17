@@ -25,9 +25,3 @@ class PsdRecovEmailForm(forms.Form):
             raise forms.ValidationError("该用户不存在!")
         
         return email
-    
-class PsdRecovCaptchaForm(forms.Form):
-    captcha = forms.CharField(max_length=6, min_length=6)
-
-class PsdRecovNewPsdForm(forms.Form):
-    newPsd = forms.CharField(max_length=16, min_length=6)

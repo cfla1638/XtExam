@@ -7,6 +7,11 @@ from .models import UserProfile, Class, ExamPaper, Question, ExamSchema, Partici
 # 密码:       nihaonihao
 # 电子邮件:   admin@example.com
 
+# 验证码邮箱：https://mail.126.com/
+# xtexam@126.com
+# psd_123456
+# 授权密码：OBXZTEYQZNDGAOPS
+
 # Register your models here.
 admin.site.register(UserProfile)
 admin.site.register(Class)
