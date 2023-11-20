@@ -15,78 +15,73 @@
         <div class="register-box-container">
             <!--第一个状态-->
             <div class='register-box status1 show'>
-                <div class='upper-box'>
-                    <img src='/static/img/lock.png' class='logo'>
-                    <form class="email-form" method='post' enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <div class="form-control">
-                            <label for="email">邮箱</label>
-                            <input type="text" id="email" name="email" placeholder="请输入邮箱" />
-                            <small>Error message</small>
-                        </div>
-                        <button class="send-captcha submit-btn" type="submit">发送验证码</button>
-                    </form>
-                </div>
-                <div class="divider"></div>
-                <div class='links-box'>
-                    <a href="#" target="_blank" title="新建账号" class='blue-links'>新建账号</a>
-                    <a href="../login/" title="返回登录页面">返回登录页面</a>
-                </div>
+                <img src='/static/img/lock.png' class='logo'>
+                <form class="register-info-form" method='post' enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-control">
+                        <label for="email">邮箱</label>
+                        <input type="text" id="email" name="email" placeholder="请输入邮箱" />
+                        <small>Error message</small>
+                    </div>
+                    <div class="form-control">
+                        <label for="name">姓名</label>
+                        <input type="text" id="name" name="name" placeholder="请输入姓名" />
+                        <small>Error message</small>
+                    </div>
+                    <div class="form-control">
+                        <label for="role">选择角色:</label>
+                        <select id="role" name="role">
+                            <option value="Student">学生</option>
+                            <option value="Teacher">教师</option>
+                        </select>
+                    </div>
+                    <button class="verify-email submit-btn" type="submit">验证邮箱</button>
+                </form>
             </div>
 
             <!--第二个状态-->
             <div class='register-box status2 disabled'>
-                <div class='upper-box'>
-                    <img src='/static/img/lock.png' class='logo'>
-                    <form class="captcha-form" method='post' enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <div class="form-control">
-                            <label for="captcha">验证码</label>
-                            <input type="text" id="captcha" name="captcha" placeholder="请输入验证码" />
-                            <small>Error message</small>
-                        </div>
-                        <button class="captcha-submit submit-btn" type="submit">确认</button>
-                    </form>
-                </div>
-                <div class="divider"></div>
-                <div class='links-box'>
-                    <span class='text'>没有收到验证码?</span>
-                    <a href="#" target="_blank" title="重新发送" class='blue-links'>重新发送</a>
-                </div>
+                <img src='/static/img/lock.png' class='logo'>
+                <form class="captcha-form" method='post' enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-control">
+                        <label for="captcha">验证码</label>
+                        <input type="text" id="captcha" name="captcha" placeholder="请输入验证码" />
+                        <small>Error message</small>
+                    </div>
+                    <button class="captcha-submit submit-btn" type="submit">确认</button>
+                </form>
             </div>
 
             <!--第三个状态-->
             <div class='register-box status3 disabled'>
-                <div class='upper-box'>
-                    <img src='/static/img/lock.png' class='logo'>
-                    <form class="setpsd-form" method='post' enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <div class="form-control">
-                            <label for="">新密码</label>
-                            <input type="text" id="newpsd" name="newpsd" placeholder="请输入新密码" />
-                            <small>Error message</small>
-                        </div>
-                        <button class="psd-submit submit-btn" type="submit">确认</button>
-                    </form>
-                </div>
-                <div class="divider"></div>
-                <div class='links-box'></div>
+                <img src='/static/img/lock.png' class='logo'>
+                <form class="setpsd-form" method='post' enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-control">
+                        <label for="newpsd">新密码</label>
+                        <input type="password" id="newpsd" name="newpsd" placeholder="请输入新密码" />
+                        <small>Error message</small>
+                    </div>
+                    <div class="form-control">
+                        <label for="repeatpsd">确认密码</label>
+                        <input type="password" id="repeatpsd" name="repeatpsd" placeholder="请确认密码" />
+                        <small>Error message</small>
+                    </div>
+                    <button class="psd-submit submit-btn" type="submit">确认</button>
+                </form>
             </div>
 
             <!--第四个状态-->
             <div class='register-box status4 disabled'>
-                <div class='upper-box'>
-                    <img src='/static/img/ok-sign.png' class='logo'>
-                    <button class="gotologin-submit submit-btn" type="submit">去登录</button>
-                </div>
-                <div class="divider"></div>
-                <div class='links-box'></div>
+                <img src='/static/img/ok-sign.png' class='logo'>
+                <button class="gotologin-submit submit-btn" type="submit">去登录</button>
             </div>
         </div>
 
         <div class="redirect_to_login-box">
             <span class='text'>已有账户?</span>
-            <a href="../login/" target="_blank" title="请登录">请登录</a>
+            <a href="../login/" target="_blank" title="请登录" class="blue-links">请登录</a>
         </div>
     </div>
 </body>

@@ -3,16 +3,18 @@ $(document).ready(init);
 let submited_email;
 
 function init() {
-    $('.email-form').submit(function (event) {
+    $('.register-info-form').submit(function (event) {
         event.preventDefault();
         submited_email = $('#email').val();
         $.ajax({
             type: 'POST',
-            url: '../passwordRecovery/',
+            url: '../register/',
             data: {
                 csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
                 email: submited_email,
-                state: 'submit_email_send_captcha'
+                user_name: $('#name').val(),
+                role: $('#role').val(),
+                state: 'submit_register_info'
             },
             success: function (response) {
                 $('.status1').removeClass('show');
@@ -32,7 +34,7 @@ function init() {
         event.preventDefault();
         $.ajax({
             type: 'POST',
-            url: '../passwordRecovery/',
+            url: '../register/',
             data: {
                 csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
                 state: 'verify_captcha',
@@ -54,9 +56,15 @@ function init() {
 
     $('.setpsd-form').submit(function (event) {
         event.preventDefault();
+        let password = $('#newpsd').val();
+        let repeatpsd = $('#repeatpsd').val();
+        if (password != repeatpsd) {
+            alert('密码前后不一致, 请重新输入!');
+            return ;
+        }
         $.ajax({
             type: 'POST',
-            url: '../passwordRecovery/',
+            url: '../register/',
             data: {
                 csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
                 state: 'set_new_password',
