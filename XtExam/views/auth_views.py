@@ -94,3 +94,22 @@ def passwordRecovery(request):
     else:
         pass
     return render(request, 'passwordRecovery.html')
+
+def register(request):
+    if request.method == 'POST':
+        request_state = request.POST.get('state')
+        if request_state is None:
+            return HttpResponseBadRequest('非法请求, 缺少参数[state]')
+        elif request_state == 'submit_email_send_captcha':
+            pass
+        elif request_state == 'resend_captcha':
+            pass
+        elif request_state == 'verify_captcha':
+            pass
+        elif request_state == 'set_new_password':
+            pass
+        else:
+            return HttpResponseBadRequest('非法请求, 参数[state]格式错误')
+    else:
+        pass
+    return render(request, 'register.html')
