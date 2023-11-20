@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.forms import ValidationError
-from .forms import LoginForm, PsdRecovEmailForm
+from ..forms import LoginForm
 from django.contrib.auth import authenticate, login
 from django.core.mail import send_mail
 from django.contrib.auth.models import User
