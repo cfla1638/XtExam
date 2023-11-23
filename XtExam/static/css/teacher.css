@@ -1,0 +1,518 @@
+:root {
+    --background-color: rgb(255, 255, 255);
+    --success-color: #2ecc71;
+    --error-color: #e74c3c;
+}
+
+/* 全局样式 */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.divider {
+    border-top: 2px solid #777;
+    width: 90%;
+    height: 1px;
+    margin: 0 0 0 0;
+}
+
+/* 侧边栏样式 */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+
+    border-right: 1px solid #BBBBBB;
+    padding: 20px;
+    box-sizing: border-box;
+    float: left;
+    position: fixed;
+
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.sidebar-btn {
+    width: 90%;
+    height: 50px;
+
+    cursor: pointer;
+    border-radius: 12px;
+    color: black;
+    font-size: 18px;
+    padding: 10px;
+    margin-top: 20px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar-btn:hover {
+    background-color: #EFEFEF;
+}
+
+.sidebar img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    position: relative;
+    transition: opacity 0.5s ease;
+}
+
+.sidebar img:hover {
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+/* 主内容样式 */
+.content {
+    height: 100vh;
+
+    margin-left: 270px;
+    padding: 20px;
+    position: relative;
+}
+
+.content-box {
+    width: 100%;
+    height: 100%;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.content-box.show {
+    opacity: 1;
+}
+
+/* Profile-Box */
+.upper-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 30vh;
+    width: 100%;
+}
+
+.upper-box img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+}
+
+.info-box {
+    margin-left: 120px;
+    margin-right: 480px;
+
+    font-size: 18px;
+}
+
+#motto {
+    font-size: 16px;
+    margin-top: 5px;
+    display: inline-block;
+}
+
+#edit-profile-btn {
+    width: 150px;
+    height: 40px;
+
+    cursor: pointer;
+    border-radius: 12px;
+    color: black;
+    background-color: #EFEFEF;
+    font-size: 16px;
+    padding: 10px;
+    margin: 10px 0 0 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#edit-profile-btn:hover {
+    background-color: #CECECE;
+}
+
+.lower-box-container {
+    position: relative;
+    width: 100%;
+    height: 60vh;
+    margin-top: 10px;
+}
+
+.lower-box {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
+}
+
+.lower-box.show {
+    opacity: 1;
+}
+
+#welcome {
+    font-size: 108px;
+    font-family: 'Lobster', sans-serif;
+}
+
+.inner-box {
+    width: 30%;
+    height: 80%;
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #BBBBBB;
+    border-radius: 12px;
+    background-color: var(--background-color);
+}
+
+.submit-btn {
+    cursor: pointer;
+    background-color: #3498db;
+    border: 2px solid #3498db;
+    border-radius: 8px;
+    color: #fff;
+    display: block;
+    font-size: 18px;
+    padding: 5px;
+    margin-top: 20px;
+    width: 90%;
+}
+
+.submit-btn:hover {
+    background-color: #2776ab;
+}
+
+.form-control {
+    margin-bottom: 10px;
+    width: 90%;
+    position: relative;
+}
+
+.form-control label {
+    color: #777;
+    margin-left: 10px;
+}
+
+.form-control input {
+    border: 2px solid #f0f0f0;
+    border-radius: 12px;
+    background-color: #EFEFEF;
+    display: inline-block;
+    width: 100%;
+    padding: 10px;
+    font-size: 18px;
+}
+
+.form-control input:focus {
+    outline: 0;
+    border-color: #777;
+}
+
+.form-control small {
+    color: var(--error-color);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    visibility: hidden;
+}
+
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-direction: column;
+}
+
+.status1 {
+    z-index: 1;
+}
+
+.status2 {
+    z-index: 2;
+}
+
+.status3 {
+    z-index: 3;
+}
+
+.disabled {
+    pointer-events: none;
+}
+
+#form-avatar {
+    visibility: hidden;
+    position: absolute;
+    left: -9999px;
+}
+
+#form-avatar-label {
+    margin-left: 0;
+    display: inline-block;
+    color: #777;
+    cursor: pointer;
+
+    border: 2px solid #f0f0f0;
+    border-radius: 12px;
+    background-color: #EFEFEF;
+    width: 100%;
+    padding: 10px;
+    font-size: 18px;
+}
+
+#avatar-label {
+    color: #777;
+    margin-left: 10px;
+}
+
+#ok {
+    width: 150px;
+    height: 150px;
+}
+
+.finished-btn {
+    margin-bottom: 60px;
+    width: 80%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-direction: column;
+}
+
+/* 班级管理页面 */
+.class_manage-box {}
+
+/* Profile-Box */
+.title-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 30vh;
+    width: 100%;
+
+}
+
+.title-box img {
+    width: 120px;
+    height: 120px;
+}
+
+#class_manage_title-text {
+    font-size: 64px;
+    margin-left: 120px;
+    margin-right: 480px;
+}
+
+.class_list-box {
+    width: 100%;
+    height: 70vh;
+    padding: 50px;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.class-item {
+    width: 260px;
+    height: 350px;
+    margin: 10px;
+
+    border: 1px solid #BBBBBB;
+    border-radius: 12px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.class-item:hover {
+    background-color: #EFEFEF;
+    cursor: pointer;
+}
+
+.class-item img {
+    width: 82%;
+    height: 68%;
+    border-radius: 12px;
+}
+
+.class_details {
+    width: 80%;
+    height: 3em;
+    margin-top: 10px;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+}
+
+.class_name {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.teacher_name {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.student_count {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+/*悬浮的加号*/
+.floating-plus {
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+    width: 60px;
+    height: 60px;
+    background-color: #2196f3;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease;
+}
+
+.floating-plus:hover {
+    background-color: #1976d2;
+}
+
+.floating-plus span {
+    font-size: 48px;
+    color: #ffffff;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* 悬浮窗口 */
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* 背景颜色，透明度可以根据需要进行调整 */
+    z-index: 9999;
+    display: none;
+}
+
+.floatingWindow {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(248, 248, 248);
+
+    width: 30vw;
+    height: 40vh;
+
+    border-radius: 12px;
+    padding: 0px;
+    z-index: 10000;
+    display: none;
+    overflow: hidden;
+}
+
+.window-header {
+    margin: 0px;
+    height: 40px;
+    background-color: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+}
+
+.window-title {
+    font-size: 18px;
+    margin-right: 10px;
+}
+
+.window-buttons {
+    display: flex;
+    gap: 7px;
+}
+
+.window-button {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+}
+
+.window-button.close {
+    background-color: #ff5f57;
+}
+
+.window-button.close:hover {
+    cursor: pointer;
+    background-color: #ca3830;
+}
+
+.window-button.minimize {
+    background-color: #ffbd2e;
+}
+
+.window-button.maximize {
+    background-color: #28c940;
+}
+
+.window-content {
+    padding: 20px;
+}
+
+.create_class-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+}

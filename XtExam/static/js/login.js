@@ -23,8 +23,20 @@ function init() {
             error: function(xhr, status, error) {
                 alert('发生错误：' + error);
             },
-            success: function(data) {
-                alert(data);
+            success: function(response) {
+                if ('role' in response) {
+                    if (response['role'] == 'T') {
+                        alert('欢迎教师登录!')
+                        window.location.href = "../teacher/";
+                    }
+                    else if (response['role'] == 'S') {
+                        alert('欢迎学生登录!')
+                        window.location.href = "../student/";
+                    }
+                }
+                else {
+                    alert('服务器未返回用户角色!')
+                }
             }
         })
     })

@@ -1,13 +1,12 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.forms import ValidationError
 from ..forms import LoginForm
-from django.contrib.auth import authenticate, login
 from django.core.mail import send_mail
 from django.contrib.auth.models import User
 from datetime import datetime, timedelta
 import XtExam.models as XtExam_models
-
+import django.contrib.auth as auth
 import logging
 import validators
 import XtExam.views.my_validators as my_validators
@@ -27,11 +26,11 @@ def login(request):
             password = form.cleaned_data['password']
             logger.info(email)
             logger.info(password)
-            user = authenticate(request, email=email, password=password)
+            user = auth.authenticate(request, email=email, password=password)
             logger.info(user)
             if user is not None:
-                # login(request, user)
-                return HttpResponse('登陆成功')
+                auth.login(request, user)
+                return JsonResponse({'role':user.profile.type})
             else:
                 return HttpResponse('登陆失败[密码错误]')
         else:

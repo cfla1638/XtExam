@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+
+<head>
+    <meta charset="utf-8">
+    <title>教师主页 - XtExam</title>
+
+    <link rel="stylesheet" href="/static/css/teacher.css">
+    <script src="/static/js/jquery-3.7.1.js"></script>
+    <script src="/static/js/teacher.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="sidebar">
+        <img src='/static/img/default_teacher_avatar.png' alt='avatar'>
+        <div class='class_manage-btn sidebar-btn'>班级管理</div>
+        <div class='exampaper_manage-btn sidebar-btn'>试题管理</div>
+        <div class='exit-btn sidebar-btn'>退出</div>
+    </div>
+    
+    <div class="content">
+        <div class='content-box profile-box show'>
+            <div class='upper-box'>
+                <img src='/static/img/default_teacher_avatar.png' alt='avatar'>
+                <div class='info-box'>
+                    <span id='name'>Test</span>
+                    <span>老师&nbsp;&nbsp;你好!</span>
+                    <br>
+                    <span id='motto'>一句话介绍自己!</span>
+                    <div id='edit-profile-btn'>编辑个人资料</div>
+                </div>
+            </div>
+            <div class="divider"></div>
+            <div class='lower-box-container'>
+                <!--第一个状态-->
+                <div class='lower-box status1 show'>
+                    <div id='welcome'>Welcome!</div>
+                </div>
+
+                <!--第二个状态-->
+                <div class='lower-box status2 disabled'>
+                    <div class='inner-box'>
+                        <form class="profile-form" method='post' enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-control">
+                                <label for="form-name">姓名</label>
+                                <input type="text" id="form-name" name="form-name" placeholder="姓名" />
+                                <small>Error message</small>
+                            </div>
+                            <div class="form-control">
+                                <label for="form-motto">验证码</label>
+                                <input type="text" id="form-motto" name="form-motto" placeholder="个性签名" />
+                                <small>Error message</small>
+                            </div>
+                            <div class="form-control">
+                                <span id='avatar-label'>头像</span><br>
+                                <label id='form-avatar-label' for="form-avatar">浏览</label>
+                                <input type="file" accept="image/*" id="form-avatar" name="form-avatar"/>
+                                <small>Error message</small>
+                            </div>
+                            <button class="profile-submit submit-btn" type="submit">修改</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!--第三个状态-->
+                <div class='lower-box status3 disabled'>
+                    <div class='inner-box'>
+                        <img src='/static/img/ok-sign.png' id='ok'>
+                        <div class="finished-btn submit-btn">完成</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class='content-box class_manage-box disabled'>
+            <div class='title-box'>
+                <img src='/static/img/class.png'>
+                <div id='class_manage_title-text'>班级管理</div>
+            </div>
+            <div class="divider"></div>
+
+            <!--创建班级的按钮以及悬浮窗-->
+            <div class="floating-plus">
+                <span>+</span>
+            </div>
+
+            <div id='overlay'></div>
+            <div class='create_class-box floatingWindow'>
+                <div class="window-header">
+                    <div class="window-buttons">
+                        <div class="window-button close"></div>
+                        <div class="window-button minimize"></div>
+                        <div class="window-button maximize"></div>
+                    </div>
+                    <div class="window-title">创建班级</div>
+                </div>
+                <div class="window-content">
+                    <form class="create_class-form" method='post' enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-control">
+                            <label for="form-class_name">班级名称</label>
+                            <input type="text" id="form-class_name" name="form-class_name" placeholder="请输入班级名称" />
+                            <small>Error message</small>
+                        </div>
+                        <button class="create_class-submit submit-btn" type="submit">确认</button>
+                    </form>
+                </div>
+            </div>
+
+            <!--班级列表-->
+
+            
+            <div class='class_list-box'>
+                <!--<div class="class-item">
+                    <img src='/static/img/class_cover.jpg' class='cover'>
+                    <div class='class_details'>
+                        <div class='class_name'>很长的课程名称</div>
+                        <div class='teacher_name'>教师名称</div>
+                        <div class='student_count'>00人</div>
+                    </div>
+                </div>-->
+            </div>
+            
+            
+        </div>
+    </div>
+</body>
+
+</html>
