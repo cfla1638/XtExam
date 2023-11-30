@@ -1,5 +1,42 @@
 $(document).ready(init);
 
+$.fn.moveAndFadeOut = function (duration, callback) {
+    var $element = this;
+
+    $element.css({
+        position: 'relative',
+        top: 0
+    });
+
+    function animateElement() {
+        $element.animate({
+            top: '+=50',
+            opacity: 0
+        }, duration, function () {
+            $element.hide();
+            if (typeof callback === 'function') {
+                callback();
+            }
+        });
+    }
+
+    animateElement();
+};
+
+function notify(message) {
+    var notificationContainer = $('#notification-container');
+
+    var notificationBar = $('<div class="notification-bar"></div>');
+    notificationBar.text(message);
+    notificationContainer.append(notificationBar);
+
+    setTimeout(function () {
+        notificationBar.moveAndFadeOut(1000, function () {
+            $(this).remove();
+        });
+    }, 3000);
+}
+
 const class_item = '<div class=\"class-item\" data-pk=\"\"><img src=\'/static/img/class_cover.jpg\' class=\'cover\'><div class=\'class_details\'><div class=\'class_name\'>很长的课程名称</div><div class=\'teacher_name\'>教师名称</div><div class=\'student_count\'>00人</div></div></div>';
 
 function update_class_list() {
@@ -19,12 +56,15 @@ function update_class_list() {
                 new_item.find('.class_name').text(i['class_name']);
                 new_item.find('.teacher_name').text(i['teacher_name']);
                 new_item.find('.student_count').text(i['student_cnt'] + '人');
-                // $('.class_list-box > div[data-pk\'\']')
+                $('.class-item').click(function() {
+                    target_link = '../classManage/' + $(this).attr('data-pk') + '/';
+                    window.location.href = target_link;
+                });
             })
         },
         error: function (xhr, status, error) {
             var errorMessage = "请求失败：" + error + "\n" + xhr.responseText;
-            alert(errorMessage);
+            notify(errorMessage);
         }
     });
 }
@@ -55,7 +95,7 @@ function init() {
         },
         error: function (xhr, status, error) {
             var errorMessage = "请求失败：" + error + "\n" + xhr.responseText;
-            alert(errorMessage);
+            notify(errorMessage);
         }
     });
 
@@ -78,12 +118,12 @@ function init() {
                 state: 'logout'
             },
             success: function (response) {
-                alert(response);
+                notify(response);
                 window.location.href = "../login/";
             },
             error: function (xhr, status, error) {
                 var errorMessage = "请求失败：" + error + "\n" + xhr.responseText;
-                alert(errorMessage);
+                notify(errorMessage);
                 window.location.href = "../login/";
             }
         });
@@ -124,7 +164,7 @@ function init() {
             },
             error: function (xhr, status, error) {
                 var errorMessage = "请求失败：" + error + "\n" + xhr.responseText;
-                alert(errorMessage);
+                notify(errorMessage);
             }
         });
     });
@@ -171,7 +211,7 @@ function init() {
             },
             error: function (xhr, status, error) {
                 var errorMessage = "请求失败：" + error + "\n" + xhr.responseText;
-                alert(errorMessage);
+                notify(errorMessage);
             }
         });
     })
@@ -218,7 +258,7 @@ function init() {
             },
             error: function (xhr, status, error) {
                 var errorMessage = "请求失败：" + error + "\n" + xhr.responseText;
-                alert(errorMessage);
+                notify(errorMessage);
             }
         });
     });

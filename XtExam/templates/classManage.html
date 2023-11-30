@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+
+<head>
+    <meta charset="utf-8">
+    <title>班级管理 - XtExam</title>
+
+    <link rel="stylesheet" href="/static/css/classManage.css">
+    <script src="/static/js/jquery-3.7.1.js"></script>
+    <script src="/static/js/classManage.js" defer></script>
+</head>
+
+<body>
+    <!--侧边栏-->
+    <div class="sidebar">
+        <img id='LOGO' src='/static/img/class.png' alt='LOGO'>
+        <div class='members_manage-btn'>
+            <img src = '/static/img/members_manage.png' alt='主页'>
+        </div>
+        <div class='student_list'>
+            {% comment %} <div class='student-item' data-stuPK=''>
+                <div class='student_name'>学生姓名</div>
+                <img src='/static/img/minus.png' alt='移除学生'>
+            </div> {% endcomment %}
+        </div>
+        <div class='btn-container'>
+            <div class='sidebar-btn exit-btn'><img src='/static/img/exit.png' alt='退出'></div>
+            <div class='sidebar-btn settings-btn'><img src='/static/img/settings.png' alt='设置'></div>
+        </div>
+    </div>
+
+    <!--浮动窗口-->
+    <div id="notification-container"></div>
+    <div id='overlay'></div>
+    <div class='members_manage-window floatingWindow'>
+        <div class="window-header">
+            <div class="window-buttons">
+                <div class="window-button mem_man-close close"></div>
+                <div class="window-button minimize"></div>
+                <div class="window-button maximize"></div>
+            </div>
+            <div class="window-title">成员管理</div>
+        </div>
+        <div class="window-content">
+            <form class="members_query-form" method='post' enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-control">
+                    <label for="form-class_name">查询成员</label>
+                    <input type="text" id="form-members_query" name="form-members_query" placeholder="请输入学号/姓名" />
+                    <small>Error message</small>
+                </div>
+                <button class="members_query-submit submit-btn" type="submit">确认</button>
+            </form>
+            <div class='members_query_res-container'>
+            </div>
+        </div>
+    </div>
+
+    <div class='publish_exam-window floatingWindow'>
+        <div class="window-header">
+            <div class="window-buttons">
+                <div class="window-button publish_exam-close close"></div>
+                <div class="window-button minimize"></div>
+                <div class="window-button maximize"></div>
+            </div>
+            <div class="window-title">发布考试</div>
+        </div>
+        <div class="window-content">
+            <form class="publish_exam-form" method='post' enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-control">
+                    <label for="form-exam_name">考试名称</label>
+                    <input type="text" id="form-exam_name" name="form-exam_name" placeholder="请输入考试名称" />
+                    <small>Error message</small>
+                </div>
+                <div class="form-control">
+                    <label for="form-paper">选择试卷</label>
+                    <select id="form-paper" name="form-paper">
+                    </select>
+                    <small>Error message</small>
+                </div>
+                <div class="form-control">
+                    <label for="form-start_time">考试开始时间</label>
+                    <input type="datetime-local" name="form-start_time" id="form-start_time">
+                    <small>Error message</small>
+                </div>
+                <div class="form-control">
+                    <label for="form-exam_duration">考试时长</label>
+                    <input type="time" name="form-exam_duration" id="form-exam_duration">
+                    <small>Error message</small>
+                </div>
+                <button class="publish_exam-submit submit-btn" type="submit">发布</button>
+            </form>
+        </div>
+    </div>
+    
+
+    <!--主体内容-->
+    <div class="content">
+        <!--首页-->
+        <div class='content-box exam-box show'>
+            <div class='bulletin-board'>
+                <div class='bulletin-board-header'>班级公告</div>
+                <div class='bulletin-text'>
+                </div>
+            </div>
+            <div class="divider"></div>
+            <!--悬浮加号-->
+            <div class="floating-plus">
+                <span>+</span>
+            </div>
+            <div class="exam-list">
+                
+            </div>
+        </div>
+
+        <!--设置界面-->
+        <div class='content-box settings-box disabled'>
+            <div class='settings-item'>
+                <div class='settings-item-header'>
+                    <div>编辑班级公告</div>
+                    <div class='save-bulletin submit-btn'>保存</div>
+                </div>
+                <textarea id='edit-bulletin' rows="4" cols="50" placeholder="请输入文本"></textarea>
+                <div class='settings-item-footer'></div>
+            </div>
+            <div class="divider"></div>
+            <div class='dissmiss-class settings-item'>
+                <div class='settings-item-header'>
+                    解散班级
+                </div>
+                <div class='dismiss-class-btn submit-btn'>解散班级</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
