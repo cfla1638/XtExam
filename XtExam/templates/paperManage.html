@@ -3,25 +3,39 @@
 
 <head>
     <meta charset="utf-8">
-    <title>班级管理 - XtExam</title>
+    <title>试卷管理 - XtExam</title>
 
-    <link rel="stylesheet" href="/static/css/classManage.css">
+    <link rel="stylesheet" href="/static/css/paperManage.css">
     <script src="/static/js/jquery-3.7.1.js"></script>
-    <script src="/static/js/classManage.js" defer></script>
+    <script src="/static/js/paperManage.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 
 <body>
     <!--侧边栏-->
     <div class="sidebar">
-        <img id='LOGO' src='/static/img/class.png' alt='LOGO'>
-        <div class='members_manage-btn'>
-            <img src = '/static/img/members_manage.png' alt='主页'>
+        <img id='LOGO' src='/static/img/paper.png' alt='LOGO'>
+        <div class='paper_manage-btn'>
+            <img src = '/static/img/plus.png' alt='主页'>
         </div>
-        <div class='student_list'>
-            {% comment %} <div class='student-item' data-stuPK=''>
-                <div class='student_name'>学生姓名</div>
-                <img src='/static/img/minus.png' alt='移除学生'>
-            </div> {% endcomment %}
+        <div class='paper_list'>
+            <div class='paper-item' data-pk=''>
+                <div class='paper_title'>试卷名称</div>
+                <img src='/static/img/minus.png' alt='移除试卷'>
+            </div>
+            <div class='paper-item' data-pk=''>
+                <div class='paper_title'>试卷名称</div>
+                <img src='/static/img/minus.png' alt='移除试卷'>
+            </div>
+            <div class='paper-item' data-pk=''>
+                <div class='paper_title'>试卷名称</div>
+                <img src='/static/img/minus.png' alt='移除试卷'>
+            </div>
+
         </div>
         <div class='btn-container'>
             <div class='sidebar-btn exit-btn'><img src='/static/img/exit.png' alt='退出'></div>
@@ -32,14 +46,14 @@
     <!--浮动窗口-->
     <div id="notification-container"></div>
     <div id='overlay'></div>
-    <div class='members_manage-window floatingWindow'>
+    <div class='paper_manage-window floatingWindow'>
         <div class="window-header">
             <div class="window-buttons">
                 <div class="window-button mem_man-close close"></div>
                 <div class="window-button minimize"></div>
                 <div class="window-button maximize"></div>
             </div>
-            <div class="window-title">成员管理</div>
+            <div class="window-title">试题管理</div>
         </div>
         <div class="window-content">
             <form class="members_query-form" method='post' enctype="multipart/form-data">
@@ -97,39 +111,293 @@
 
     <!--主体内容-->
     <div class="content">
-        <!--首页-->
-        <div class='content-box exam-box show'>
-            <div class='bulletin-board'>
-                <div class='bulletin-board-header'>班级公告</div>
-                <div class='bulletin-text'>
-                </div>
+        <!--欢迎界面-->
+        <div class='content-box welcome-box show'>
+            <div id='welcome'>Welcome!</div>
+            <div id='under_welcome'>选择试卷开启编辑...</div>
+        </div>
+
+        <!--编辑器界面-->
+        <div class='content-box editor-box disabled'>
+            <div class='editor-header'>
+                <div class='editor-header-text'>试卷编辑器</div>
             </div>
             <div class="divider"></div>
             <!--悬浮加号-->
             <div class="floating-plus">
                 <span>+</span>
             </div>
-            <div class="exam-list">
-                
+            <div class='paper_header'>
+                <div class="form-control">
+                    <label for="paper_header_title">试卷名称</label>
+                    <input type="text" id="paper_header_title" name="paper_header_title" placeholder="请输入试卷名称" />
+                </div>
+                <div class="form-control">
+                    <label for="paper_header_tips">试卷提示</label>
+                    <input type="text" id="paper_header_tips" name="paper_header_tips" placeholder="请输入试卷提示" />
+                </div>
             </div>
-        </div>
+            <div class="question-list">
+                <div class='question-item'>
+                    <form class='ques-item-status editor-form-control MultiCho show'>
+                        <div class='ques-item-row1'>
+                            <textarea class='ques_prompt' rows="3" cols="30" placeholder="请输入题干"></textarea>
+                            <div class='ques-item-col2'>
+                                <select class='ques_type'>
+                                    <option value='MC' selected>单选题</option>
+                                    <option value='MR'>多选题</option>
+                                    <option value='FB'>填空题</option>
+                                    <option value='SB'>主观题</option>
+                                </select>
+                                <input type="text" class="ques_category" placeholder="知识点类型" />
+                            </div>
+                        </div>
+                        <input type="text" class="ques_options" placeholder="请输入选项,格式为若干个[A,B,C...]{选项提示文字}" />
+                        <input type="text" class="ans" placeholder="请输入答案,格式为单个的A,B,C..." />
+                    </form>
+                    <form class='ques-item-status editor-form-control MultiRes disabled'>
+                        <div class='ques-item-row1'>
+                            <textarea class='ques_prompt' rows="3" cols="30" placeholder="请输入题干"></textarea>
+                            <div class='ques-item-col2'>
+                                <select class='ques_type'>
+                                    <option value='MC'>单选题</option>
+                                    <option value='MR' selected>多选题</option>
+                                    <option value='FB'>填空题</option>
+                                    <option value='SB'>主观题</option>
+                                </select>
+                                <input type="text" class="ques_category" placeholder="知识点类型" />
+                            </div>
+                        </div>
+                        <input type="text" class="ques_options" placeholder="请输入选项,格式为若干个[A,B,C...]{选项提示文字}" />
+                        <input type="text" class="ans" placeholder="请输入答案, 例如ABC" />
+                    </form>
+                    <form class='ques-item-status editor-form-control Blank disabled'>
+                        <div class='ques-item-row1'>
+                            <textarea class='ques_prompt' rows="3" cols="30" placeholder="请输入题干"></textarea>
+                            <div class='ques-item-col2'>
+                                <select class='ques_type'>
+                                    <option value='MC'>单选题</option>
+                                    <option value='MR'>多选题</option>
+                                    <option value='FB' selected>填空题</option>
+                                    <option value='SB'>主观题</option>
+                                </select>
+                                <input type="text" class="ques_category" placeholder="知识点类型" />
+                            </div>
+                        </div>
+                        <textarea class='blank_ans' rows="2" cols="30" placeholder="请输入每个空的答案，格式为若干[1,2,3...]{答案}"></textarea>
+                    </form>
+                    <form class='ques-item-status editor-form-control Subjective disabled'>
+                        <div class='ques-item-row1'>
+                            <textarea class='ques_prompt' rows="3" cols="30" placeholder="请输入题干"></textarea>
+                            <div class='ques-item-col2'>
+                                <select class='ques_type'>
+                                    <option value='MC'>单选题</option>
+                                    <option value='MR'>多选题</option>
+                                    <option value='FB'>填空题</option>
+                                    <option value='SB' selected>主观题</option>
+                                </select>
+                                <input type="text" class="ques_category" placeholder="知识点类型" />
+                            </div>
+                        </div>
+                        <textarea class='subjective_ans' rows="2" cols="30" placeholder="请输入参考答案/评分标准"></textarea>
+                    </form>
+                </div>
 
-        <!--设置界面-->
-        <div class='content-box settings-box disabled'>
-            <div class='settings-item'>
-                <div class='settings-item-header'>
-                    <div>编辑班级公告</div>
-                    <div class='save-bulletin submit-btn'>保存</div>
+                <div class='question-item'>
+                    <form class='ques-item-status editor-form-control MultiCho show'>
+                        <div class='ques-item-row1'>
+                            <textarea class='ques_prompt' rows="3" cols="30" placeholder="请输入题干"></textarea>
+                            <div class='ques-item-col2'>
+                                <select class='ques_type'>
+                                    <option value='MC' selected>单选题</option>
+                                    <option value='MR'>多选题</option>
+                                    <option value='FB'>填空题</option>
+                                    <option value='SB'>主观题</option>
+                                </select>
+                                <input type="text" class="ques_category" placeholder="知识点类型" />
+                            </div>
+                        </div>
+                        <input type="text" class="ques_options" placeholder="请输入选项,格式为若干个[A,B,C...]{选项提示文字}" />
+                        <input type="text" class="ans" placeholder="请输入答案,格式为单个的A,B,C..." />
+                    </form>
+                    <form class='ques-item-status editor-form-control MultiRes disabled'>
+                        <div class='ques-item-row1'>
+                            <textarea class='ques_prompt' rows="3" cols="30" placeholder="请输入题干"></textarea>
+                            <div class='ques-item-col2'>
+                                <select class='ques_type'>
+                                    <option value='MC'>单选题</option>
+                                    <option value='MR' selected>多选题</option>
+                                    <option value='FB'>填空题</option>
+                                    <option value='SB'>主观题</option>
+                                </select>
+                                <input type="text" class="ques_category" placeholder="知识点类型" />
+                            </div>
+                        </div>
+                        <input type="text" class="ques_options" placeholder="请输入选项,格式为若干个[A,B,C...]{选项提示文字}" />
+                        <input type="text" class="ans" placeholder="请输入答案, 例如ABC" />
+                    </form>
+                    <form class='ques-item-status editor-form-control Blank disabled'>
+                        <div class='ques-item-row1'>
+                            <textarea class='ques_prompt' rows="3" cols="30" placeholder="请输入题干"></textarea>
+                            <div class='ques-item-col2'>
+                                <select class='ques_type'>
+                                    <option value='MC'>单选题</option>
+                                    <option value='MR'>多选题</option>
+                                    <option value='FB' selected>填空题</option>
+                                    <option value='SB'>主观题</option>
+                                </select>
+                                <input type="text" class="ques_category" placeholder="知识点类型" />
+                            </div>
+                        </div>
+                        <textarea class='blank_ans' rows="2" cols="30" placeholder="请输入每个空的答案，格式为若干[1,2,3...]{答案}"></textarea>
+                    </form>
+                    <form class='ques-item-status editor-form-control Subjective disabled'>
+                        <div class='ques-item-row1'>
+                            <textarea class='ques_prompt' rows="3" cols="30" placeholder="请输入题干"></textarea>
+                            <div class='ques-item-col2'>
+                                <select class='ques_type'>
+                                    <option value='MC'>单选题</option>
+                                    <option value='MR'>多选题</option>
+                                    <option value='FB'>填空题</option>
+                                    <option value='SB' selected>主观题</option>
+                                </select>
+                                <input type="text" class="ques_category" placeholder="知识点类型" />
+                            </div>
+                        </div>
+                        <textarea class='subjective_ans' rows="2" cols="30" placeholder="请输入参考答案/评分标准"></textarea>
+                    </form>
                 </div>
-                <textarea id='edit-bulletin' rows="4" cols="50" placeholder="请输入文本"></textarea>
-                <div class='settings-item-footer'></div>
-            </div>
-            <div class="divider"></div>
-            <div class='dissmiss-class settings-item'>
-                <div class='settings-item-header'>
-                    解散班级
+
+                <div class='question-item'>
+                    <form class='ques-item-status editor-form-control MultiCho show'>
+                        <div class='ques-item-row1'>
+                            <textarea class='ques_prompt' rows="3" cols="30" placeholder="请输入题干"></textarea>
+                            <div class='ques-item-col2'>
+                                <select class='ques_type'>
+                                    <option value='MC' selected>单选题</option>
+                                    <option value='MR'>多选题</option>
+                                    <option value='FB'>填空题</option>
+                                    <option value='SB'>主观题</option>
+                                </select>
+                                <input type="text" class="ques_category" placeholder="知识点类型" />
+                            </div>
+                        </div>
+                        <input type="text" class="ques_options" placeholder="请输入选项,格式为若干个[A,B,C...]{选项提示文字}" />
+                        <input type="text" class="ans" placeholder="请输入答案,格式为单个的A,B,C..." />
+                    </form>
+                    <form class='ques-item-status editor-form-control MultiRes disabled'>
+                        <div class='ques-item-row1'>
+                            <textarea class='ques_prompt' rows="3" cols="30" placeholder="请输入题干"></textarea>
+                            <div class='ques-item-col2'>
+                                <select class='ques_type'>
+                                    <option value='MC'>单选题</option>
+                                    <option value='MR' selected>多选题</option>
+                                    <option value='FB'>填空题</option>
+                                    <option value='SB'>主观题</option>
+                                </select>
+                                <input type="text" class="ques_category" placeholder="知识点类型" />
+                            </div>
+                        </div>
+                        <input type="text" class="ques_options" placeholder="请输入选项,格式为若干个[A,B,C...]{选项提示文字}" />
+                        <input type="text" class="ans" placeholder="请输入答案, 例如ABC" />
+                    </form>
+                    <form class='ques-item-status editor-form-control Blank disabled'>
+                        <div class='ques-item-row1'>
+                            <textarea class='ques_prompt' rows="3" cols="30" placeholder="请输入题干"></textarea>
+                            <div class='ques-item-col2'>
+                                <select class='ques_type'>
+                                    <option value='MC'>单选题</option>
+                                    <option value='MR'>多选题</option>
+                                    <option value='FB' selected>填空题</option>
+                                    <option value='SB'>主观题</option>
+                                </select>
+                                <input type="text" class="ques_category" placeholder="知识点类型" />
+                            </div>
+                        </div>
+                        <textarea class='blank_ans' rows="2" cols="30" placeholder="请输入每个空的答案，格式为若干[1,2,3...]{答案}"></textarea>
+                    </form>
+                    <form class='ques-item-status editor-form-control Subjective disabled'>
+                        <div class='ques-item-row1'>
+                            <textarea class='ques_prompt' rows="3" cols="30" placeholder="请输入题干"></textarea>
+                            <div class='ques-item-col2'>
+                                <select class='ques_type'>
+                                    <option value='MC'>单选题</option>
+                                    <option value='MR'>多选题</option>
+                                    <option value='FB'>填空题</option>
+                                    <option value='SB' selected>主观题</option>
+                                </select>
+                                <input type="text" class="ques_category" placeholder="知识点类型" />
+                            </div>
+                        </div>
+                        <textarea class='subjective_ans' rows="2" cols="30" placeholder="请输入参考答案/评分标准"></textarea>
+                    </form>
                 </div>
-                <div class='dismiss-class-btn submit-btn'>解散班级</div>
+
+                <div class='question-item'>
+                    <form class='ques-item-status editor-form-control MultiCho show'>
+                        <div class='ques-item-row1'>
+                            <textarea class='ques_prompt' rows="3" cols="30" placeholder="请输入题干"></textarea>
+                            <div class='ques-item-col2'>
+                                <select class='ques_type'>
+                                    <option value='MC' selected>单选题</option>
+                                    <option value='MR'>多选题</option>
+                                    <option value='FB'>填空题</option>
+                                    <option value='SB'>主观题</option>
+                                </select>
+                                <input type="text" class="ques_category" placeholder="知识点类型" />
+                            </div>
+                        </div>
+                        <input type="text" class="ques_options" placeholder="请输入选项,格式为若干个[A,B,C...]{选项提示文字}" />
+                        <input type="text" class="ans" placeholder="请输入答案,格式为单个的A,B,C..." />
+                    </form>
+                    <form class='ques-item-status editor-form-control MultiRes disabled'>
+                        <div class='ques-item-row1'>
+                            <textarea class='ques_prompt' rows="3" cols="30" placeholder="请输入题干"></textarea>
+                            <div class='ques-item-col2'>
+                                <select class='ques_type'>
+                                    <option value='MC'>单选题</option>
+                                    <option value='MR' selected>多选题</option>
+                                    <option value='FB'>填空题</option>
+                                    <option value='SB'>主观题</option>
+                                </select>
+                                <input type="text" class="ques_category" placeholder="知识点类型" />
+                            </div>
+                        </div>
+                        <input type="text" class="ques_options" placeholder="请输入选项,格式为若干个[A,B,C...]{选项提示文字}" />
+                        <input type="text" class="ans" placeholder="请输入答案, 例如ABC" />
+                    </form>
+                    <form class='ques-item-status editor-form-control Blank disabled'>
+                        <div class='ques-item-row1'>
+                            <textarea class='ques_prompt' rows="3" cols="30" placeholder="请输入题干"></textarea>
+                            <div class='ques-item-col2'>
+                                <select class='ques_type'>
+                                    <option value='MC'>单选题</option>
+                                    <option value='MR'>多选题</option>
+                                    <option value='FB' selected>填空题</option>
+                                    <option value='SB'>主观题</option>
+                                </select>
+                                <input type="text" class="ques_category" placeholder="知识点类型" />
+                            </div>
+                        </div>
+                        <textarea class='blank_ans' rows="2" cols="30" placeholder="请输入每个空的答案，格式为若干[1,2,3...]{答案}"></textarea>
+                    </form>
+                    <form class='ques-item-status editor-form-control Subjective disabled'>
+                        <div class='ques-item-row1'>
+                            <textarea class='ques_prompt' rows="3" cols="30" placeholder="请输入题干"></textarea>
+                            <div class='ques-item-col2'>
+                                <select class='ques_type'>
+                                    <option value='MC'>单选题</option>
+                                    <option value='MR'>多选题</option>
+                                    <option value='FB'>填空题</option>
+                                    <option value='SB' selected>主观题</option>
+                                </select>
+                                <input type="text" class="ques_category" placeholder="知识点类型" />
+                            </div>
+                        </div>
+                        <textarea class='subjective_ans' rows="2" cols="30" placeholder="请输入参考答案/评分标准"></textarea>
+                    </form>
+                </div>
+
             </div>
         </div>
     </div>

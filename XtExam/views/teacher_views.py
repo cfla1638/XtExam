@@ -230,3 +230,35 @@ def classManage(request, class_pk):
     else:
         pass
     return render(request, 'classManage.html')
+
+def paperManage(request):
+    if request.method == 'POST':
+        user = request.user
+        if not request.user.is_authenticated:
+                return HttpResponseBadRequest('用户未登录!')
+        request_state = request.POST.get('state')
+        if request_state is None:
+            return HttpResponseBadRequest('非法请求, 缺少参数[state]')
+        elif request_state == 'fetch_bulletin_text':
+            pass
+        elif request_state == 'fetch_student_list':
+            pass
+        elif request_state == 'remove_student':
+            pass
+        elif request_state == 'add_remove_student':
+            pass
+        elif request_state == 'members_query':
+            pass
+        elif request_state == 'fetch_exam_list':
+            pass
+        elif request_state == 'fetch_papers':
+            pass
+        elif request_state == 'publish_exam':
+            pass
+        elif request_state == 'edit-bulletin':
+            pass
+        else:
+            return HttpResponseBadRequest('非法请求, 参数[state]格式错误')
+    else:
+        pass
+    return render(request, 'paperManage.html')

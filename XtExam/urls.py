@@ -10,5 +10,6 @@ urlpatterns = [
     path("passwordRecovery/", auth_views.passwordRecovery, name='passwordRecovery'),
     path("register/", auth_views.register, name='register'),
     path("teacher/", teacher_views.index, name="teacher_index"),
-    path("classManage/<int:class_pk>/", teacher_views.classManage, name='class_manage')
+    path("classManage/<int:class_pk>/", teacher_views.classManage, name='class_manage'),
+    path("paperManage/", teacher_views.paperManage, name='paper_manage')
 ]
