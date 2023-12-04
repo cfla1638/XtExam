@@ -1,0 +1,228 @@
+:root {
+    --background-color: rgb(255, 255, 255);
+    --success-color: #2ecc71;
+    --error-color: #e74c3c;
+}
+
+/* 全局样式 */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.divider {
+    border-top: 2px solid #777;
+    width: 90%;
+    height: 1px;
+    margin: 0 0 0 0;
+}
+
+/* 侧边栏样式 */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+
+    border-right: 1px solid #BBBBBB;
+    padding: 20px;
+    box-sizing: border-box;
+    float: left;
+    position: fixed;
+
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.sidebar-btn:hover {
+    background-color: #EFEFEF;
+}
+
+.sidebar img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    position: relative;
+    transition: opacity 0.5s ease;
+}
+
+.sidebar img:hover {
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+/* 主内容样式 */
+.content {
+    height: 100vh;
+
+    margin-left: 270px;
+    padding: 20px;
+    position: relative;
+}
+
+.content-box {
+    width: 100%;
+    height: 100%;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.content-box.show {
+    opacity: 1;
+}
+
+/* Profile-Box */
+.upper-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 30vh;
+    width: 100%;
+}
+
+.upper-box img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+}
+
+.info-box {
+    margin-left: 120px;
+    margin-right: 480px;
+
+    font-size: 18px;
+}
+
+#motto {
+    font-size: 16px;
+    margin-top: 5px;
+    display: inline-block;
+}
+
+#edit-profile-btn {
+    width: 150px;
+    height: 40px;
+
+    cursor: pointer;
+    border-radius: 12px;
+    color: black;
+    background-color: #EFEFEF;
+    font-size: 16px;
+    padding: 10px;
+    margin: 10px 0 0 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#edit-profile-btn:hover {
+    background-color: #CECECE;
+}
+
+.lower-box-container {
+    position: relative;
+    width: 100%;
+    height: 60vh;
+    margin-top: 10px;
+}
+
+.lower-box {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
+}
+
+.lower-box.show {
+    opacity: 1;
+}
+
+#welcome {
+    font-size: 108px;
+    font-family: 'Lobster', sans-serif;
+}
+
+/*加入班级的相关代码*/
+#join-class-btn {
+    color: blue;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+#popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border: 1px solid gray;
+    display: none;
+}
+
+#popup.hidden {
+    display: none;
+}
+
+#popup.visible {
+    display: block;
+}
+/*到此为止*/
+
+/*加入班级*/
+.selected-course {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .selected-course img {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+  }
+  
+  .selected-course h4 {
+    margin-bottom: 5px;
+  }
+  
+  .selected-course .underline {
+    width: 60px;
+    height: 2px;
+    background-color: #777;
+    margin-bottom: 10px;
+  }
+  
+  .selected-course .class-info {
+    font-size: 14px;
+  }
+  /*到此为止*/
