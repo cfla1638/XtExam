@@ -8,6 +8,7 @@ from django.core import serializers
 from django.core.files.storage import default_storage
 import uuid
 import os
+import json
 
 import logging
 import validators
@@ -239,26 +240,121 @@ def paperManage(request):
         request_state = request.POST.get('state')
         if request_state is None:
             return HttpResponseBadRequest('非法请求, 缺少参数[state]')
-        elif request_state == 'fetch_bulletin_text':
-            pass
-        elif request_state == 'fetch_student_list':
-            pass
-        elif request_state == 'remove_student':
-            pass
-        elif request_state == 'add_remove_student':
-            pass
-        elif request_state == 'members_query':
-            pass
-        elif request_state == 'fetch_exam_list':
-            pass
-        elif request_state == 'fetch_papers':
-            pass
-        elif request_state == 'publish_exam':
-            pass
-        elif request_state == 'edit-bulletin':
-            pass
+        elif request_state == 'fetch_paper_list':
+            papers = XtExam_models.ExamPaper.objects.filter(owner=user.profile)
+            data = []
+            for i in papers:
+                item = {}
+                item['pk'] = i.pk
+                item['title'] = i.title
+                data.append(item)
+            return JsonResponse(data, safe=False)
+        elif request_state == 'remove_paper':
+            paper_pk = request.POST.get('paper_pk')
+            if paper_pk is None:
+                return HttpResponseBadRequest('非法请求, 参数[paper_pk]不存在')
+            try:
+                member_to_remove = XtExam_models.ExamPaper.objects.get(pk=paper_pk)
+                member_to_remove.delete()
+                return HttpResponse('删除成功!')
+            except XtExam_models.ExamPaper.DoesNotExist:
+                return HttpResponseBadRequest('该Paper不存在!')
+            
+        elif request_state == 'create_paper':
+            new_paper = XtExam_models.ExamPaper()
+            new_paper.title = 'new paper'
+            new_paper.owner = user.profile
+            new_paper.save()
+            return HttpResponse('添加成功!')
+        elif request_state == 'fetch_paper':
+            paper_pk = request.POST.get('paper_pk')
+            if paper_pk is None:
+                return HttpResponseBadRequest('非法请求, 参数[paper_pk]不存在')
+            try:
+                paper = XtExam_models.ExamPaper.objects.get(pk=paper_pk)
+            except XtExam_models.ExamPaper.DoesNotExist:
+                return HttpResponseBadRequest('该Paper不存在!')
+            data = {}
+            data['title'] = paper.title
+            data['tips'] = paper.tips
+            question_list = []
+            for i in paper.questions.all():
+                ques_item = {}
+                ques_item['pk'] = i.pk
+                ques_item['type'] = i.type
+                ques_item['category'] = i.category
+                ques_item['prompt'] = i.prompt
+                if i.type == 'MC':
+                    ques_item['options'] = i.options
+                    ques_item['ans'] = i.standard_answer
+                elif i.type == 'MR':
+                    ques_item['options'] = i.options
+                    ques_item['ans'] = i.standard_answer
+                elif i.type == 'FB':
+                    ques_item['ans'] = i.standard_answer
+                elif i.type == 'SB':
+                    ques_item['ans'] = i.standard_answer
+                question_list.append(ques_item)
+            data['question_list'] = question_list
+            return JsonResponse(data, safe=False)
         else:
             return HttpResponseBadRequest('非法请求, 参数[state]格式错误')
     else:
         pass
     return render(request, 'paperManage.html')
+
+def save_paper(request):
+    if request.method == 'POST':
+        user = request.user
+        if not request.user.is_authenticated:
+                return HttpResponseBadRequest('用户未登录!')
+        
+        json_data = json.loads(request.body.decode('utf-8'))
+        cur_paper = XtExam_models.ExamPaper.objects.get(pk=json_data['paper_pk'])
+        cur_paper.title = json_data['header']['title']
+        cur_paper.tips = json_data['header']['tips']
+        cur_paper.save()
+
+        old_questions = []
+        for i in cur_paper.examschema_set.all():
+            old_questions.append(i.question)
+        cur_paper.examschema_set.all().delete()
+
+        for i, ques_data in enumerate(json_data['ques_list']):
+            if len(ques_data['ques_pk']) == 0:
+                ques = XtExam_models.Question()
+            else:
+                try:
+                    ques = XtExam_models.Question.objects.get(pk=ques_data['ques_pk'])
+                    if ques in old_questions:
+                        old_questions.remove(ques)
+                except XtExam_models.Question.DoesNotExist:
+                    return HttpResponseBadRequest('题目不存在!')
+            ques.type = ques_data['type']
+            ques.category = ques_data['category']
+            ques.prompt = ques_data['prompt']
+            if ques_data['type'] == 'MC':
+                ques.options = ques_data['options']
+                ques.standard_answer = ques_data['ans']
+            elif ques_data['type'] == 'MR':
+                ques.options = ques_data['options']
+                ques.standard_answer = ques_data['ans']
+            elif ques_data['type'] == 'FB':
+                ques.standard_answer = ques_data['ans']
+            elif ques_data['type'] == 'SB':
+                ques.standard_answer = ques_data['ans']
+            else:
+                return HttpResponseBadRequest('题目类型错误!')
+            ques.save()
+
+            schema = XtExam_models.ExamSchema()
+            schema.exam = cur_paper
+            schema.question = ques
+            schema.seq_number = i + 1
+            schema.save()
+        logger.info(old_questions)
+        for i in old_questions:
+            i.delete()
+        return HttpResponse('保存成功!')
+    else:
+        return HttpResponseBadRequest('只允许POST请求!')
