@@ -254,8 +254,10 @@ def paperManage(request):
             if paper_pk is None:
                 return HttpResponseBadRequest('非法请求, 参数[paper_pk]不存在')
             try:
-                member_to_remove = XtExam_models.ExamPaper.objects.get(pk=paper_pk)
-                member_to_remove.delete()
+                paper_to_remove = XtExam_models.ExamPaper.objects.get(pk=paper_pk)
+                for i in paper_to_remove.questions.all():
+                    i.delete()
+                paper_to_remove.delete()
                 return HttpResponse('删除成功!')
             except XtExam_models.ExamPaper.DoesNotExist:
                 return HttpResponseBadRequest('该Paper不存在!')
@@ -358,3 +360,50 @@ def save_paper(request):
         return HttpResponse('保存成功!')
     else:
         return HttpResponseBadRequest('只允许POST请求!')
+    
+def exam(request, exam_pk):
+    if request.method == 'POST':
+        try:
+            cur_exam = XtExam_models.Exam.objects.get(pk=int(exam_pk))
+        except XtExam_models.Exam.DoesNotExist:
+            return HttpResponseBadRequest('试卷不存在!')
+        user = request.user
+        if not request.user.is_authenticated:
+                return HttpResponseBadRequest('用户未登录!')
+        request_state = request.POST.get('state')
+        if request_state is None:
+            return HttpResponseBadRequest('非法请求, 缺少参数[state]')
+        elif request_state == 'fetch_student_list':
+            data = []
+            for i in cur_exam.classIn.members.all():
+                item = {}
+                item['pk'] = i.pk
+                item['name'] = i.name
+                data.append(item)
+            return JsonResponse(data, safe=False)
+        elif request_state == 'fetch_ques_list':
+            paper = cur_exam.paper
+            data = []
+            for i in paper.questions.all():
+                ques_item = {}
+                ques_item['pk'] = i.pk
+                ques_item['type'] = i.type
+                ques_item['category'] = i.category
+                ques_item['prompt'] = i.prompt
+                if i.type == 'MC':
+                    ques_item['options'] = i.options
+                    ques_item['ans'] = i.standard_answer
+                elif i.type == 'MR':
+                    ques_item['options'] = i.options
+                    ques_item['ans'] = i.standard_answer
+                elif i.type == 'FB':
+                    ques_item['ans'] = i.standard_answer
+                elif i.type == 'SB':
+                    ques_item['ans'] = i.standard_answer
+                data.append(ques_item)
+            return JsonResponse(data, safe=False)
+        else:
+            return HttpResponseBadRequest('非法请求, 参数[state]格式错误')
+    else:
+        pass
+    return render(request, 'exam.html')

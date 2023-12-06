@@ -12,5 +12,6 @@ urlpatterns = [
     path("teacher/", teacher_views.index, name="teacher_index"),
     path("classManage/<int:class_pk>/", teacher_views.classManage, name='class_manage'),
     path("paperManage/", teacher_views.paperManage, name='paper_manage'),
-    path("save_paper/", teacher_views.save_paper, name='save_paper')
+    path("save_paper/", teacher_views.save_paper, name='save_paper'),
+    path("exam/<int:exam_pk>/", teacher_views.exam, name='exam')
 ]

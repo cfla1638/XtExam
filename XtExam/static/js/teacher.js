@@ -70,6 +70,10 @@ function update_class_list() {
 }
 
 function init() {
+    $('.exampaper_manage-btn').click(function() {
+        window.location.href = '../paperManage/';
+    });
+
     // 取得用户信息
     $.ajax({
         type: 'POST',

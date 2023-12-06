@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+
+<head>
+    <meta charset="utf-8">
+    <title>考试详情 - XtExam</title>
+
+    <link rel="stylesheet" href="/static/css/exam.css">
+    <script src="/static/js/jquery-3.7.1.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+    <script src="/static/js/exam.js" defer></script>
+</head>
+
+<body>
+    <!--侧边栏-->
+    <div class="sidebar">
+        <img id='LOGO' src='/static/img/statistics.png' alt='LOGO'>
+        <div class='student_list'>
+            <div class='student-item selected' data-pk=''>学生姓名</div>
+            <div class='student-item' data-pk=''>学生姓名</div>
+            <div class='student-item' data-pk=''>学生姓名</div>
+        </div>
+        <div class='btn-container'>
+            <div class='sidebar-btn exit-btn'><img src='/static/img/exit.png' alt='退出'></div>
+            <div class='sidebar-btn settings-btn'><img src='/static/img/settings.png' alt='设置'></div>
+        </div>
+    </div>
+
+    <!--浮动窗口-->
+    <div id="notification-container"></div>    
+
+    <!--主体内容-->
+    <div class="content">
+        <!--欢迎界面-->
+        <div class='content-box welcome-box show'>
+            <img id='welcome'src='/static/img/big-stat.png' >
+            <div id='under_welcome'>选择学生进行批改...</div>
+        </div>
+
+        <!--作答详情界面-->
+        <div class='content-box ans_details-box disabled'>
+            <div class='ans_details-header'>
+                <div class='ans_details-header-text'>作答详情</div>
+            </div>
+            <div class="divider"></div>
+            <!--悬浮加号-->
+            <div class="floating-save">
+                <span>保存</span>
+            </div>
+            <div class="question-list">
+                {% comment %} <div class='question-item MC' data-pk=''>
+                    <div class='prompt'></div>
+                    <div class='options'></div>
+                    <div class='ans-container'><span>学生作答: </span><span class='ans'>XXXXX</span></div>
+                    <form><span>得分: </span><input type='text' class="form-score" name="form-score" placeholder=""/></form>
+                </div>
+
+                <div class='question-item MR' data-pk=''>
+                    <div class='prompt'>题干:</div>
+                    <div class='options'>选项</div>
+                    <div class='ans-container'><span>学生作答: </span><span class='ans'>XXXXX</span></div>
+                    <form><span>得分: </span><input type='text' class="form-score" name="form-score" placeholder=""/></form>
+                </div>
+
+                <div class='question-item FB' data-pk=''>
+                    <div class='prompt'>题干:</div>
+                    <div class='blank_list'>
+                        <div class='blank_item'><span>1. </span><span>答案1</span></div>
+                        <div class='blank_item'><span>2. </span><span>答案2</span></div>
+                        <div class='blank_item'><span>3. </span><span>答案3</span></div>
+                        <div class='blank_item'><span>3. </span><span>答案3</span></div>
+                        <div class='blank_item'><span>3. </span><span>答案3</span></div>
+                        <div class='blank_item'><span>3. </span><span>答案3</span></div>
+                        <div class='blank_item'><span>3. </span><span>答案3</span></div>
+                        <div class='blank_item'><span>3. </span><span>答案3</span></div>
+                        <div class='blank_item'><span>3. </span><span>答案3</span></div>
+                        <div class='blank_item'><span>3. </span><span>答案3</span></div>
+                        <div class='blank_item'><span>3. </span><span>答案3</span></div>
+                        <div class='blank_item'><span>3. </span><span>答案3</span></div>
+                        <div class='blank_item'><span>3. </span><span>答案3</span></div>
+                    </div>
+                    <form><span>得分: </span><input type='text' class="form-score" name="form-score" placeholder=""/></form>
+                </div>
+
+                <div class='question-item SB' data-pk=''>
+                    <div class='prompt'>题干:</div>
+                    <div class='ans-container'><span>学生作答: </span><span class='ans'>XXXXX</span></div>
+                    <form><span>得分: </span><input type='text' class="form-score" name="form-score" placeholder=""/></form>
+                </div> {% endcomment %}
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

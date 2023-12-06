@@ -58,7 +58,9 @@ function ques_type_transform(src) {
 }
 
 function bind_ques_item() {
-    $('.question-item').data('oldValue', 'MC');
+    $('.question-item').filter(function() {
+        return $(this).data('oldValue') === undefined;
+      }).data('oldValue', 'MC');
     $('.ques_type').change(function () {
         let ques_item = $(this).parent().parent().parent().parent();
         let cur_val = $(this).val();
@@ -114,6 +116,7 @@ function load_paper(paper_pk) {
                     activated_form.find('.ques_category').val(i.category);
                     activated_form.find('.ques_options').val(i.options);
                     activated_form.find('.ans').val(i.ans);
+                    new_item.data('oldValue', 'MC');
                 }
                 else if (i.type == 'MR') {
                     old_form = new_item.find('form.MultiCho');
@@ -128,6 +131,8 @@ function load_paper(paper_pk) {
                     activated_form.find('.ques_category').val(i.category);
                     activated_form.find('.ques_options').val(i.options);
                     activated_form.find('.ans').val(i.ans);
+
+                    new_item.data('oldValue', 'MR');
                 }
                 else if (i.type == 'FB') {
                     old_form = new_item.find('form.MultiCho');
@@ -141,6 +146,8 @@ function load_paper(paper_pk) {
                     activated_form.find('.ques_prompt').val(i.prompt);
                     activated_form.find('.ques_category').val(i.category);
                     activated_form.find('.blank_ans').val(i.ans);
+
+                    new_item.data('oldValue', 'FB');
                 }
                 else if (i.type == 'SB') {
                     old_form = new_item.find('form.MultiCho');
@@ -154,6 +161,8 @@ function load_paper(paper_pk) {
                     activated_form.find('.ques_prompt').val(i.prompt);
                     activated_form.find('.ques_category').val(i.category);
                     activated_form.find('.subjective_ans').val(i.ans);
+
+                    new_item.data('oldValue', 'SB');
                 }
             });
             bind_ques_item();
@@ -275,6 +284,10 @@ function init() {
                 notify(errorMessage);
             }
         });
+    });
+
+    $('.exit-btn').click(function() {
+        window.location.href = '../teacher/';
     });
 
     // 悬浮窗口
