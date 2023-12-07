@@ -32,6 +32,30 @@ h2 {
     text-align: center;
 }
 
+#notification-container {
+    position: fixed;
+    top: 16%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 9999;
+}
+  
+.notification-bar {
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: rgb(20, 126, 201);
+    border-radius: 4px;
+    margin-bottom: 10px;
+
+    font-size: 20px;
+    font-weight: bold;
+    color: rgb(252, 253, 254);
+}
+
 .right-box {
     width: 25%;
     display: flex;

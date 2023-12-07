@@ -106,6 +106,15 @@ function update_sidebar() {
     });
 }
 
+function get_url_prefix(url) {
+    const pattern = /(.+\/)classManage/;
+    const matches = url.match(pattern);
+    if (matches && matches.length > 1) {
+      return matches[1];
+    }
+    return null;
+}
+
 function update_exam_list() {
     $('.exam-list').empty();
     $.ajax({
@@ -122,6 +131,9 @@ function update_exam_list() {
                 new_item.attr('data-pk', i['pk']);
                 new_item.text(i['name']);
             });
+            $('.exam-item').click(function() {
+                window.location.href = get_url_prefix(window.location.href) + 'exam/' + $(this).attr('data-pk') + '/';
+            });
         },
         error: function (xhr, status, error) {
             var errorMessage = "请求失败：" + error + "\n" + xhr.responseText;
@@ -131,6 +143,21 @@ function update_exam_list() {
 }
 
 function init() {
+    $.ajax({
+        type: 'POST',
+        url: window.location.href,
+        data: {
+            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+        },
+        success: function (response) {},
+        error: function (xhr, status, error) {
+            if (xhr.responseText == '用户未登录!') {
+                notify('用户未登录, 即将返回登陆界面');
+                setTimeout(function() {window.location.href = get_url_prefix(window.location.href) + 'login/'}, 3000)
+            }
+        }
+    });
+
     // 悬浮窗口
     $('.members_manage-btn').click(function () {
         $('#overlay').fadeIn();

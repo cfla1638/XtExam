@@ -265,6 +265,23 @@ function update_paper_list() {
 }
 
 function init() {
+
+    // 判断是否登录
+    $.ajax({
+        type: 'POST',
+        url: window.location.href,
+        data: {
+            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+        },
+        success: function (response) {},
+        error: function (xhr, status, error) {
+            if (xhr.responseText == '用户未登录!') {
+                notify('用户未登录, 即将返回登陆界面');
+                setTimeout(function() {window.location.href = '../login/'}, 3000)
+            }
+        }
+    });
+
     // 侧边栏
     update_paper_list();
     $('.paper_manage-btn').click(function () {
@@ -293,7 +310,8 @@ function init() {
     // 悬浮窗口
     $('.floating-save').click(function () {
         paper_pk = cur_selected?.find('img').attr('data-pk');
-        jsonData = {};
+        
+        let jsonData = {};
         jsonData['paper_pk'] = paper_pk;
         jsonData['header'] = { 'title': $('#paper_header_title').val(), 'tips': $('#paper_header_tips').val() };
         let ques_list = []

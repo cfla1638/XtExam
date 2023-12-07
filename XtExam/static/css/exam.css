@@ -277,6 +277,22 @@ body {
 }
 
 /* ans_details-box */
+.statistics-box {
+    border: 1px solid #BBBBBB;
+    width: 80%;
+    min-height: 80px;
+    margin-top: 20px;
+    border-radius: 12px;
+    padding-left: 280px;
+    padding-right: 360px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    font-size: 22px;
+}
+
 .ans_details-box {
     display: flex;
     justify-content: flex-start;

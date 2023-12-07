@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
@@ -100,13 +100,13 @@ def index(request):
 
 def classManage(request, class_pk):
     if request.method == 'POST':
+        if not request.user.is_authenticated:
+                return HttpResponseBadRequest('用户未登录!')
         try:
             cur_class = XtExam_models.Class.objects.get(pk=int(class_pk))
         except XtExam_models.Class.DoesNotExist:
             return HttpResponseBadRequest('班级不存在!')
         user = request.user
-        if not request.user.is_authenticated:
-                return HttpResponseBadRequest('用户未登录!')
         request_state = request.POST.get('state')
         if request_state is None:
             return HttpResponseBadRequest('非法请求, 缺少参数[state]')
@@ -363,13 +363,13 @@ def save_paper(request):
     
 def exam(request, exam_pk):
     if request.method == 'POST':
+        user = request.user
+        if not request.user.is_authenticated:
+                return HttpResponseBadRequest('用户未登录!')
         try:
             cur_exam = XtExam_models.Exam.objects.get(pk=int(exam_pk))
         except XtExam_models.Exam.DoesNotExist:
             return HttpResponseBadRequest('试卷不存在!')
-        user = request.user
-        if not request.user.is_authenticated:
-                return HttpResponseBadRequest('用户未登录!')
         request_state = request.POST.get('state')
         if request_state is None:
             return HttpResponseBadRequest('非法请求, 缺少参数[state]')
@@ -402,8 +402,74 @@ def exam(request, exam_pk):
                     ques_item['ans'] = i.standard_answer
                 data.append(ques_item)
             return JsonResponse(data, safe=False)
+        elif request_state == 'fetch_ans':
+            student_pk = request.POST.get('student_pk')
+            if student_pk is None:
+                return HttpResponseBadRequest('非法请求, 参数[student_pk]不存在')
+            try:
+                stu = XtExam_models.UserProfile.objects.get(pk=student_pk)
+            except XtExam_models.UserProfile.DoesNotExist:
+                return HttpResponseBadRequest('该学生不存在!')
+            answers = XtExam_models.Answer.objects.filter(student=stu, exam = cur_exam)
+            data = []
+            for i in answers:
+                item = {}
+                item['pk'] = i.pk
+                item['ques_pk'] = i.question.pk
+                item['score'] = i.achieved_score
+                item['type'] = i.ans_type
+                if item['type'] == 'MC' or item['type'] == 'MR':
+                    item['ans'] = i.choice_ans
+                else:
+                    item['ans'] = i.text_ans
+                data.append(item)
+            return JsonResponse(data, safe=False)
+        elif request_state == 'get_class_pk':
+            return JsonResponse({ 'class_pk': cur_exam.classIn.pk });   
         else:
             return HttpResponseBadRequest('非法请求, 参数[state]格式错误')
     else:
         pass
     return render(request, 'exam.html')
+
+def save_ans(request):
+    if request.method == 'POST':
+        user = request.user
+        if not request.user.is_authenticated:
+                return HttpResponseBadRequest('用户未登录!')
+        
+        json_data = json.loads(request.body.decode('utf-8'))
+        try:
+            stu = XtExam_models.UserProfile.objects.get(pk=json_data['stu_pk'])
+        except XtExam_models.UserProfile.DoesNotExist:
+            return HttpResponseBadRequest('该学生不存在!')
+        try:
+            exam = XtExam_models.Exam.objects.get(pk=json_data['exam_pk'])
+        except XtExam_models.Exam.DoesNotExist:
+            return HttpResponseBadRequest('该场考试不存在!')
+        for i in json_data['ans_list']:
+            try:
+                ans = XtExam_models.Answer.objects.get(pk=i['ans_pk'])
+            except XtExam_models.Answer.DoesNotExist:
+                return HttpResponseBadRequest('作答不存在!')
+            except ValueError:
+                # 如果学生没有作答这道题
+                try:
+                    ques = XtExam_models.Question.objects.get(pk=i['ques_pk'])
+                except XtExam_models.Question.DoesNotExist:
+                    return HttpResponseBadRequest('题目pk={}，不存在!'.format(i['ques_pk']))
+                if len(i['ans_pk']) == 0:
+                    ans = XtExam_models.Answer()
+                    ans.student = stu
+                    ans.exam = exam
+                    ans.question = ques
+                else:   # 非法pk
+                    return HttpResponseBadRequest('非法请求, 参数[ans_pk]格式错误')
+            if len(i['score']) != 0:
+                ans.achieved_score = i['score']
+            else:
+                ans.achieved_score = 0
+            ans.save()
+        return HttpResponse('保存成功!')
+    else:
+        return HttpResponseBadRequest('只允许POST请求!')
