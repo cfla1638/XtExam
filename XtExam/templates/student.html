@@ -7,17 +7,18 @@
 
     <link rel="stylesheet" href="/static/css/student.css">
     <script src="/static/js/jquery-3.7.1.js"></script>
-    <script src="/static/js/teacher.js" defer></script>
+    <script src="/static/js/student.js" defer></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
 </head>
 
 <body>
+    <div id="notification-container"></div>
     <div class="sidebar">
         <img src='/static/img/default_student_avatar.png' alt='avatar'>
-        <div class='class_manage-btn sidebar-btn'>个人信息</div>
-        <div class='exampaper_manage-btn sidebar-btn'>已选课程</div>
+        <div class='class_manage-btn sidebar-btn'>已选课程</div>
+        <div class='exampaper_manage-btn sidebar-btn'>个人信息</div>
         <div class='exit-btn sidebar-btn'>退出</div>
     </div>
 
@@ -33,21 +34,14 @@
                     <div id='edit-profile-btn'>编辑个人资料</div>
                 </div>
             </div>
-            <div class='content-box class_manage-box disabled'>
-                <button id="join-class-btn">加入班级</button>
-                <div id="popup" class="hidden">
-                    <input type="text" id="class-input" placeholder="请输入班级名称/ID">
-                    <button id="query-btn">查询</button>
-                </div>
-            </div>
             <div class="divider"></div>
             <div class='lower-box-container'>
                 <!--第一个状态-->
                 <div class='lower-box status1 show'>
                     <div id='welcome'>Welcome!</div>
                 </div>
-                   <!--第二个状态-->
-                   <div class='lower-box status2 disabled'>
+                <!--第二个状态-->
+                <div class='lower-box status2 disabled'>
                     <div class='inner-box'>
                         <form class="profile-form" method='post' enctype="multipart/form-data">
                             {% csrf_token %}
@@ -71,8 +65,8 @@
                         </form>
                     </div>
                 </div>
-                 <!--第三个状态-->
-                 <div class='lower-box status3 disabled'>
+                <!--第三个状态-->
+                <div class='lower-box status3 disabled'>
                     <div class='inner-box'>
                         <img src='/static/img/ok-sign.png' id='ok'>
                         <div class="finished-btn submit-btn">完成</div>
@@ -86,33 +80,45 @@
                 <img src='/static/img/course.png'>
                 <div id='class_manage_title-text'>已选课程</div>
             </div>
-            <div class="divider"></div>
+            <div class="divider1"></div>
+             <!--加入的按钮以及悬浮窗-->
+             <div class="floating-plus">
+                <span>+</span>
+            </div>
 
-            <!--已选课程-->
-            <div class="selected-courses-container">
-                <div class="selected-courses-header">
-                    <img src="/static/img/course_image.png" alt="课程图片">
-                    <div class="selected-courses-title">已选课程</div>
+            <div id='overlay'></div>
+            <div class='create_class-box floatingWindow'>
+                <div class="window-header">
+                    <div class="window-buttons">
+                        <div class="window-button close"></div>
+                        <div class="window-button minimize"></div>
+                        <div class="window-button maximize"></div>
+                    </div>
+                    <div class="window-title">加入班级</div>
                 </div>
-                <div class="selected-courses-underline"></div>
-                <div class="selected-courses-list">
-                    <div class="selected-course">
-                        <div class="course-name">课程名称1</div>
-                        <div class="course-info">班级：班级1 | 教师：教师1</div>
-                    </div>
-                    
-                    <div class="selected-course">
-                        <div class="course-name">课程名称2</div>
-                        <div class="course-info">班级：班级2 | 教师：教师2</div>
-                    </div>
-                    
-                    <div class="selected-course">
-                        <div class="course-name">课程名称3</div>
-                        <div class="course-info">班级：班级3 | 教师：教师3</div>
-                    </div>
-                    
+                <div class="window-content">
+                    <form class="join_class-form" method='post' enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-control">
+                            <label for="searchId">班级ID</label>
+                            <input type="text" id="searchId" name="searchId" placeholder="请输入班级ID" />
+                            <small>Error message</small>
+                        </div>
+                        <button class="join_class-submit submit-btn" id="confirmBtn" type="submit">确认</button>
+                    </form>
                 </div>
             </div>
+
+            <div class='class_list-box'></div>
+                <!--<div class="class-item">
+                    <img src='/static/img/class_cover.jpg' class='cover'>
+                    <div class='class_details'>
+                        <div class='class_name'>很长的课程名称</div>
+                        <div class='teacher_name'>教师名称</div>
+                        <div class='student_count'>00人</div>
+                    </div>
+                </div>-->
+            <!-- </div> -->
         </div>
     </div>
 </body>

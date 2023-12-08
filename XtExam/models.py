@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# 用户, 根据其类型又有两个子类: 教师和学生
 class UserProfile(models.Model):
     ROLE_CHOICES = (
         ('S', 'Student'),
@@ -13,19 +12,19 @@ class UserProfile(models.Model):
     type = models.CharField(max_length=10, choices=ROLE_CHOICES)
     motto = models.CharField(max_length=100, null=True, blank=True)
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
-
+    
     class Meta:
         verbose_name = 'User Profile'
 
     def __str__(self) -> str:
         return self.name
 
-# 班级类
 class Class(models.Model):
     name = models.CharField(max_length=50)    # 班级名称
     teacher = models.ForeignKey(UserProfile, related_name='teacher', on_delete=models.CASCADE)     # 班级所属的教师
     bulletin = models.CharField(max_length=250, null=True, blank=True)     # 班级公告
     members = models.ManyToManyField(UserProfile)  # 班级成员
+
 
     def __str__(self) -> str:
         return self.name
