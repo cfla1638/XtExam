@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.forms import ValidationError
 from ..forms import LoginForm
@@ -15,7 +15,7 @@ import random
 logger = logging.getLogger(__name__)
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the XtExam index.")
+    return redirect('./login/')
 
 def login(request):
     # 用户点击登录按钮
@@ -32,9 +32,9 @@ def login(request):
                 auth.login(request, user)
                 return JsonResponse({'role':user.profile.type})
             else:
-                return HttpResponse('登陆失败[密码错误]')
+                return HttpResponseBadRequest('登陆失败[密码错误]')
         else:
-            return HttpResponse('用户不存在![表单验证失败]')
+            return HttpResponseBadRequest('用户不存在!')
     else:   # 第一次请求页面
         form = LoginForm()
     return render(request, 'login.html')

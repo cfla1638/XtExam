@@ -42,7 +42,7 @@ function update_class_list() {
                 new_item.find('.teacher_name').text(i['teacher_name']);
                 new_item.find('.student_count').text(i['student_cnt'] + '人');
                 $('.class-item').click(function() {
-                    target_link = '../classManage/' + $(this).attr('data-pk') + '/';
+                    target_link = '../class_exam/' + $(this).attr('data-pk') + '/';
                     window.location.href = target_link;
                 });
             })

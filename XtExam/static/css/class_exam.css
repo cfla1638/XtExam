@@ -1,0 +1,269 @@
+:root {
+    --background-color: rgb(255, 255, 255);
+    --success-color: #2ecc71;
+    --error-color: #e74c3c;
+}
+
+/* 全局样式 */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.divider {
+    border-top: 2px solid #777;
+    width: 95%;
+    height: 0.1px;
+    margin: 0 0 0 0; 
+}
+
+
+/* 侧边栏样式 */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+
+    border-right: 1px solid #BBBBBB;
+    padding: 20px;
+    box-sizing: border-box;
+    float: left;
+    position: fixed;
+
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.sidebar-btn {
+    width: 90%;
+    height: 50px;
+
+    cursor: pointer;
+    border-radius: 12px;
+    color: black;
+    font-size: 18px;
+    padding: 10px;
+    margin-top: 20px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar-btn:hover {
+    background-color: #EFEFEF;
+}
+
+.sidebar img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    position: relative;
+    transition: opacity 0.5s ease;
+}
+
+.sidebar img:hover {
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+#notification-container {
+    position: fixed;
+    top: 16%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 9999;
+}
+  
+.notification-bar {
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: rgb(20, 126, 201);
+    border-radius: 4px;
+    margin-bottom: 10px;
+
+    font-size: 20px;
+    font-weight: bold;
+    color: rgb(252, 253, 254);
+}
+
+/* 主内容样式 */
+.content {
+    height: calc(100vh - 60px); /* 设置合适的高度，这里假设有一个 20px 的顶部内边距 */
+    margin-left: 270px;
+    padding: 20px;
+    position: relative;
+}
+
+.content-box {
+    width: 100%;
+    height: 100%;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.content-box.show {
+    opacity: 1;
+}
+
+.exam-box {
+    z-index: 1;
+}
+
+.settings-box {
+    z-index: 0;
+}
+
+
+/* content-box */
+.bulletin-board {
+    height: 30vh;
+    width: 95%;
+
+    border: 1px solid #BBBBBB;
+    border-radius: 12px;
+    overflow: hidden;
+
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-right: 15px;
+}
+
+.bulletin-board-header {
+    margin: 0px;
+    height: 30px;
+    background-color: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    font-size: 20px;
+}
+
+.bulletin-text {
+    width: 100%;
+    height: 80%;
+
+    padding: 20px;
+    font-size: 20px;
+
+    overflow: hidden;
+}
+
+.bulletin-text:hover {
+    overflow: auto;
+}
+
+.bulletin-text::-webkit-scrollbar {
+    width: 0.1em;
+    height: 0.5em;
+}
+
+.bulletin-text::-webkit-scrollbar-thumb {
+    background-color: #888;
+}
+
+.bulletin-text::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+}
+
+.bulletin-text.hidden-scrollbar {
+    overflow: hidden;
+}
+
+.exam-list {
+    position: relative;
+    width: 100%;
+    height: 60vh;
+    margin-top: 20px; /* 负值将其上移 */
+    padding: 20px;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: flex-start;
+}
+
+.exam-list h2 {
+    margin-bottom: 10px;
+  }
+
+.exam-item {
+    width: 220px;
+    height: 80px;
+    margin: 10px;
+    padding: 10px;
+
+    border: 1px solid #BBBBBB;
+    border-radius: 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.exam-item:hover {
+    background-color: #EFEFEF;
+}
+
+/*历史考试和新的考试*/
+.history-exams,
+.new-exams {
+  margin-top: 20px; /* 根据需要调整上边距的值 */
+}
+
+.history-exams h2,
+.new-exams h2 {
+  margin-bottom: 10px; /* 根据需要调整标题下边距的值 */
+}
+
+.history-exam-item {
+    background-color: lightgray; /* 历史考试项的背景颜色 */
+  }
+  
+  .new-exam-item {
+    background-color: lightblue; /* 新的考试项的背景颜色 */
+  }
+
+  .new-exam {
+    background-color: lightblue;
+  }
+  
+  .exam-status {
+    font-size: 12px;
+  }
+
+  /*返回按钮*/
+  .back-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: #f2f2f2;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .back-button:hover {
+    background-color: #e0e0e0;
+  }

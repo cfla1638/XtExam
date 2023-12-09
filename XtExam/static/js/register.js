@@ -2,6 +2,43 @@ $(document).ready(init);
 
 let submited_email;
 
+$.fn.moveAndFadeOut = function (duration, callback) {
+    var $element = this;
+
+    $element.css({
+        position: 'relative',
+        top: 0
+    });
+
+    function animateElement() {
+        $element.animate({
+            top: '+=50',
+            opacity: 0
+        }, duration, function () {
+            $element.hide();
+            if (typeof callback === 'function') {
+                callback();
+            }
+        });
+    }
+
+    animateElement();
+};
+
+function notify(message) {
+    var notificationContainer = $('#notification-container');
+
+    var notificationBar = $('<div class="notification-bar"></div>');
+    notificationBar.text(message);
+    notificationContainer.append(notificationBar);
+
+    setTimeout(function () {
+        notificationBar.moveAndFadeOut(1000, function () {
+            $(this).remove();
+        });
+    }, 3000);
+}
+
 function init() {
     $('.register-info-form').submit(function (event) {
         event.preventDefault();
@@ -21,11 +58,11 @@ function init() {
                 $('.status1').addClass('disabled');
                 $('.status2').addClass('show');
                 $('.status2').removeClass('disabled');
-                alert(response);
+                notify(response);
             },
             error: function (xhr, status, error) {
                 var errorMessage = "请求失败：" + error + "\n" + xhr.responseText;
-                alert(errorMessage);
+                notify(errorMessage);
             }
         });
     })
@@ -45,11 +82,11 @@ function init() {
                 $('.status2').addClass('disabled');
                 $('.status3').addClass('show');
                 $('.status3').removeClass('disabled');
-                alert(response);
+                notify(response);
             },
             error: function (xhr, status, error) {
                 var errorMessage = "请求失败：" + error + "\n" + xhr.responseText;
-                alert(errorMessage);
+                notify(errorMessage);
             }
         });
     })
@@ -59,7 +96,7 @@ function init() {
         let password = $('#newpsd').val();
         let repeatpsd = $('#repeatpsd').val();
         if (password != repeatpsd) {
-            alert('密码前后不一致, 请重新输入!');
+            notify('密码前后不一致, 请重新输入!');
             return ;
         }
         $.ajax({
@@ -75,11 +112,11 @@ function init() {
                 $('.status3').addClass('disabled');
                 $('.status4').addClass('show');
                 $('.status4').removeClass('disabled');
-                alert(response);
+                notify(response);
             },
             error: function (xhr, status, error) {
                 var errorMessage = "请求失败：" + error + "\n" + xhr.responseText;
-                alert(errorMessage);
+                notify(errorMessage);
             }
         });
     })

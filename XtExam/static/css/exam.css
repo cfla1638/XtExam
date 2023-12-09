@@ -139,30 +139,10 @@ body {
     cursor: pointer;
 }
 
-.paper_manage-btn {
-    width: 200px;
-    height: 60px;
-    border: 1px solid #BBBBBB;
-    border-radius: 12px;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.paper_manage-btn img {
-    width: 45px;
-    height: 45px;
-}
-
-.paper_manage-btn:hover {
-    background-color: #EFEFEF;
-    cursor: pointer;
-}
-
-.paper_list {
+.student_list {
     width: 210px;
-    height: 50vh;
+    height: 60vh;
 
     display: flex;
     flex-direction: column;
@@ -171,28 +151,28 @@ body {
     overflow: hidden;
 }
 
-.paper_list:hover {
+.student_list:hover {
     overflow: auto;
 }
 
-.paper_list::-webkit-scrollbar {
+.student_list::-webkit-scrollbar {
     width: 0.1em;
     height: 0.5em;
 }
 
-.paper_list::-webkit-scrollbar-thumb {
+.student_list::-webkit-scrollbar-thumb {
     background-color: #888;
 }
 
-.paper_list::-webkit-scrollbar-track {
+.student_list::-webkit-scrollbar-track {
     background-color: #f1f1f1;
 }
 
-.paper_list.hidden-scrollbar {
+.student_list.hidden-scrollbar {
     overflow: hidden;
 }
 
-.paper-item {
+.student-item {
     width: 200px;
     height: 60px;
     margin: 5px 0px 5px 0px;
@@ -202,24 +182,13 @@ body {
 
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     min-height: 60px;
 
     font-size: 20px;
 }
 
-.paper-item img {
-    width: 25px;
-    height: 25px;
-    transition: opacity 0.5s ease;
-}
-
-.paper-item img:hover {
-    opacity: 0.7;
-    cursor: pointer;
-}
-
-.paper-item:hover {
+.student-item:hover {
     background-color: #EFEFEF;
 }
 
@@ -297,21 +266,39 @@ body {
 
 /* welcome-box */
 #welcome {
-    font-size: 108px;
-    font-family: 'Lobster', sans-serif;
+    width: 200px;
+    height: 200px;
+    margin-bottom: 20px;
 }
 
 #under_welcome {
-    font-size: 28px;
+    font-size: 20px;
+    color: #BBBBBB;
 }
 
-/* editor-box */
-.editor-box {
+/* ans_details-box */
+.statistics-box {
+    border: 1px solid #BBBBBB;
+    width: 80%;
+    min-height: 80px;
+    margin-top: 20px;
+    border-radius: 12px;
+    padding-left: 280px;
+    padding-right: 360px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    font-size: 22px;
+}
+
+.ans_details-box {
     display: flex;
     justify-content: flex-start;
 }
 
-.editor-header {
+.ans_details-header {
     width: 100%;
     min-height: 15vh;
     
@@ -322,7 +309,7 @@ body {
     justify-content: space-between;
 }
 
-.editor-header-text {
+.ans_details-header-text {
     font-size: 48px;
     margin-left: 100px;
 }
@@ -338,18 +325,6 @@ body {
     align-items: center;
 }
 
-.paper_header {
-    border: 1px solid #BBBBBB;
-    width: 80%;
-    height: 180px;
-    margin-top: 20px;
-    border-radius: 12px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
 
 /* editor特供form-control */
 .editor-form-control {
@@ -373,8 +348,7 @@ body {
 }
 
 .editor-form-control input:focus {
-    outline: 0;
-    border-color: #777;
+    
 }
 
 .editor-form-control small {
@@ -405,133 +379,84 @@ body {
 .question-item {
     width: 80%;
     min-height: 200px;
+    padding: 10px;
 
     margin-top: 20px;
     border: 1px solid #BBBBBB;
     border-radius: 12px;
 
-    position: relative;
-}
-
-.ques-item-status {
-    width: 100%;
-    height: 100%;
-    padding: 10px;
-
-    position: absolute;
-    top: 0;
-    left: 0;
-    opacity: 0;
-    transition: opacity 0.5s ease-out;
-
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
     flex-direction: column;
 }
 
-.ques-item-status.show {
-    opacity: 1;
+.prompt {
+    width: 80%;
+    height: 4em;
+
+    background-color: #EFEFEF;
 }
 
-.ques-item-row1 {
+.options {
     width: 80%;
-    height: 100px;
 
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+    flex-wrap: wrap;
+
+    background-color: #EFEFEF;
 }
 
-.ques-item-col2 {
-    height: 100%;
-    width: 20%;
+.option_item {
+    margin: 2px 10px 2px 10px;
+}
+
+.ans-container {
+    width: 80%;
+
+    background-color: #EFEFEF;
+}
+
+.blank_list {
+    width: 80%;
 
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    background-color: #EFEFEF;
 }
 
-.ques_prompt {
-    height: 100%;
-    width: 76%;
-
-    font-size: 20px;
+.blank_item {
+    margin: 2px 10px 2px 10px;
 }
 
-.ques_category{
-    width: 80%;
+.form-score {
+    width: 72px;
+
+    border: 2px solid #f0f0f0;
+    border-radius: 8px;
+    background-color: #EFEFEF;
+    display: inline-block;
+    padding: 5px;
+    font-size: 16px;
 }
 
-.ques_options {
-    width: 80%;
+.question-item form {
+    margin-right: 600px;
 }
 
-.ans {
-    width: 80%;
+.form-score:focus {
+    outline: 0;
+    border-color: #777;
 }
 
-.blank_ans {
-    height: 30%;
-    width: 80%;
 
-    font-size: 20px;
-}
-
-.subjective_ans {
-    height: 30%;
-    width: 80%;
-
-    font-size: 20px;
-}
-
-.remove_paper {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    position: absolute;
-    top: 16px;
-    right: 20px;
-    background-color: #ff5f57;
-}
-
-.remove_paper:hover {
-    background-color: #ca3830;
-}
-
-/*悬浮的加号*/
-.floating-plus {
-    position: fixed;
-    bottom: 50px;
-    right: 50px;
-    width: 60px;
-    height: 60px;
-    background-color: #2196f3;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3);
-    transition: background-color 0.3s ease;
-    z-index: 1000;
-}
-
-.floating-plus:hover {
-    background-color: #1976d2;
-}
-
-.floating-plus span {
-    font-size: 48px;
-    color: #ffffff;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-}
-
+/*悬浮的保存*/
 .floating-save {
     position: fixed;
-    bottom: 120px;
+    bottom: 50px;
     right: 50px;
     width: 60px;
     height: 60px;
@@ -554,95 +479,4 @@ body {
     font-size: 20px;
     color: #ffffff;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-}
-
-/* 悬浮窗口 */
-#overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    /* 背景颜色，透明度可以根据需要进行调整 */
-    z-index: 5000;
-    display: none;
-}
-
-.floatingWindow {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgb(248, 248, 248);
-
-    border-radius: 12px;
-    padding: 0px;
-    z-index: 5001;
-    display: none;
-    overflow: hidden;
-}
-
-.window-header {
-    margin: 0px;
-    height: 40px;
-    background-color: #ddd;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 10px;
-}
-
-.window-title {
-    font-size: 18px;
-    margin-right: 10px;
-}
-
-.window-buttons {
-    display: flex;
-    gap: 7px;
-}
-
-.window-button {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-}
-
-.window-button.close {
-    background-color: #ff5f57;
-}
-
-.window-button.close:hover {
-    cursor: pointer;
-    background-color: #ca3830;
-}
-
-.window-button.minimize {
-    background-color: #ffbd2e;
-}
-
-.window-button.maximize {
-    background-color: #28c940;
-}
-
-.window-content {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-content: flex-start;
-    align-items: center
-}
-
-.create_class-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px;
-}
-
-.members_manage-window {
-    width: 50vw;
-    height: 65vh;
 }

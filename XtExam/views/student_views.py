@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
@@ -8,6 +8,7 @@ from django.core import serializers
 from django.core.files.storage import default_storage
 import uuid
 import os
+import json
 
 import logging
 import validators
@@ -15,21 +16,6 @@ import XtExam.views.my_validators as my_validators
 import XtExam.models as XtExam_models
 
 logger = logging.getLogger(__name__)
-
-def fetchSelectedCourses(user):
-    student_profile = XtExam_models.UserProfile.objects.get(user=user)
-    student_classes = XtExam_models.Class.objects.filter(members=student_profile)
-    response_data = []
-    for student_class in student_classes:
-        class_info = {
-            'pk': student_class.pk,
-            'class_name': student_class.name,
-            'teacher_name': student_class.teacher.name,
-            'bulletin': student_class.bulletin
-        }
-        response_data.append(class_info)
-
-    return JsonResponse(response_data, safe=False)
 
 def index(request):
     if request.method == 'POST':
@@ -123,3 +109,73 @@ def index(request):
     else:
         pass
     return render(request, 'student.html')
+
+
+def class_exam(request, class_pk):
+    if request.method == 'POST':
+        if not request.user.is_authenticated:
+                return HttpResponseBadRequest('用户未登录!')
+        try:
+            cur_class = XtExam_models.Class.objects.get(pk=int(class_pk))
+            cur_student = XtExam_models.UserProfile.objects.get(user=request.user)
+        except XtExam_models.Class.DoesNotExist:
+            return HttpResponseBadRequest('班级不存在!')
+        user = request.user
+        request_state = request.POST.get('state')
+        if request_state is None:
+            return HttpResponseBadRequest('非法请求, 缺少参数[state]')
+        elif request_state == 'fetch_bulletin_text':
+            return JsonResponse({'bulletin' : cur_class.bulletin})
+        elif request_state == 'fetch_exam_content':
+            exam_id = request.POST.get('exam_id')
+            if exam_id is None:
+                return HttpResponseBadRequest('非法请求, 缺少参数[exam_id]')
+            try:
+                exam = XtExam_models.Exam.objects.get(pk=int(exam_id), classIn=cur_class)
+            except XtExam_models.Exam.DoesNotExist:
+                return HttpResponseBadRequest('考试不存在!')
+            
+            # 在这里根据需要进行相应的处理，例如获取试卷信息等
+            exam_content = "这是试卷的内容"
+            
+            # 返回 JSON 响应
+            return JsonResponse({'exam_content': exam_content})
+        
+        elif request_state == 'fetch_exam_list':
+            exams = XtExam_models.Exam.objects.filter(classIn=cur_class)
+            data = {
+                'exams': [],
+                'participations': []
+            }
+            
+            for exam in exams:
+                exam_item = {
+                    'pk': exam.pk,
+                    'name': exam.name
+                    # 其他属性...
+                }
+                data['exams'].append(exam_item)
+                
+                # 获取学生参与情况
+                participations = XtExam_models.Participation.objects.filter(exam=exam, student=cur_student)
+                for participation in participations:
+                    participation_item = {
+                        'exam': participation.exam.pk,
+                        'state': participation.state
+                    }
+                    data['participations'].append(participation_item)
+            
+            return JsonResponse(data, safe=False)
+    else:
+        pass
+    return render(request, 'class_exam.html')
+
+
+# def class_exam_view(request, class_id):
+#     # 根据 class_id 查询班级公告信息
+#     class_obj = XtExam_models.Class.objects.get(pk=class_id)
+#     bulletin = class_obj.bulletin
+
+#     # 将班级公告信息传递给模板引擎
+#     context = {'bulletin': bulletin}
+#     return render(request, 'class_exam.html', context)

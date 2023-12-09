@@ -70,6 +70,10 @@ function update_class_list() {
 }
 
 function init() {
+    $('.exampaper_manage-btn').click(function() {
+        window.location.href = '../paperManage/';
+    });
+
     // 取得用户信息
     $.ajax({
         type: 'POST',
@@ -94,8 +98,10 @@ function init() {
             }
         },
         error: function (xhr, status, error) {
-            var errorMessage = "请求失败：" + error + "\n" + xhr.responseText;
+            var errorMessage = "请求失败：" + error + xhr.responseText;
             notify(errorMessage);
+            notify('即将返回登陆界面');
+            setTimeout(function() { window.location.href = '../login/' } , 3000)
         }
     });
 
