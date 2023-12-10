@@ -174,6 +174,7 @@ function bind_exam_item() {
                 exam_pk: $(this).attr('data-pk')
             },
             success: function (response) {
+                console.log(response);
                 if (!isTimeWithinEvent(response['start_time'], response['duration'])) {
                     notify('当前时间不在考试时间范围内!');
                 }
@@ -239,7 +240,7 @@ function bind_exam_item() {
                             new_item.find('.prompt').text(i['prompt']);
                             new_item.attr('data-anspk', i['anspk']);
 
-                            let str = i['ans'];
+                            let str = i['blanks'];
                             let regex = /\[(\w+)\]\{([^}]+)\}\s*/g;
         
                             let match;

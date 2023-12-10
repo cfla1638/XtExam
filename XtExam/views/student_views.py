@@ -187,6 +187,7 @@ def class_exam(request, class_pk):
                     if (ans_exist):
                         ques_item['ans'] = ans.choice_ans
                 elif i.type == 'FB':
+                    ques_item['blanks'] = i.standard_answer
                     if (ans_exist):
                         ques_item['ans'] = ans.text_ans
                 elif i.type == 'SB':
