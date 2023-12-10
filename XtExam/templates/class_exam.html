@@ -13,7 +13,7 @@
 <body>
     <div id="notification-container"></div>
     <div class="sidebar">
-        <img src='/static/img/default_student_avatar.png' alt='avatar'>
+        <img src='/static/img/paper.png' alt='avatar'>
         <div class='class_manage-btn sidebar-btn'>自主练习</div>
         <div class='exampaper_manage-btn sidebar-btn'>错题集</div>
         <div class="exit-btn sidebar-btn">退出</div>
@@ -24,30 +24,24 @@
         <div class='content-box exam-box show'>
             <div class='bulletin-board'>
                 <div class='bulletin-board-header'>班级公告</div>
-                <div class='bulletin-text'>
-                    <!-- 这里展示课程公告的内容 -->
-                </div>
+                <div class='bulletin-text'></div>
             </div>
             <div class="divider"></div>
-            <div class="exam-list">
-                <!-- 历史考试列表 -->
-                <div class="history-exams">
-                    <!-- 这里展示历史考试列表 -->
-                </div>
-                <!-- 新的考试列表 -->
-                <div class="new-exams">
-                    <!-- 这里展示新的考试列表 -->
-                </div>
-            </div>
+            <div class="exam-list"></div>
         </div>
 
         <!--状态2：考试试题内容-->
-        <div class="content-box exam-content">
-            <!-- 这里展示考试试题内容 -->
-            
-            <!-- 试卷信息会动态填充到这里 -->
-             <!-- 返回按钮 -->
-             <button class="back-button">返回</button>
+        <div class="content-box exam-content disabled">
+            <div class='exam-header'>
+                <div class='exam-header-text'>开始考试</div>
+                <div class='countdown_container'><span>距离考试结束还有</span><span id='countdown'></span></div>
+            </div>
+            <div class="divider"></div>
+            <div class="question-list"></div>
+            <button class="back-button">返回</button>
+            <div class="floating-save">
+                <span>保存</span>
+            </div>
         </div>
     </div>
 </body>

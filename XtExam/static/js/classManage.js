@@ -8,12 +8,10 @@ const paper_options = '<option value=\'\'></option>';
 
 $.fn.moveAndFadeOut = function (duration, callback) {
     var $element = this;
-
     $element.css({
         position: 'relative',
         top: 0
     });
-
     function animateElement() {
         $element.animate({
             top: '+=50',
@@ -25,7 +23,6 @@ $.fn.moveAndFadeOut = function (duration, callback) {
             }
         });
     }
-
     animateElement();
 };
 

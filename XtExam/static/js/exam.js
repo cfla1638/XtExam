@@ -70,6 +70,7 @@ function load_ans(student_pk) {
             student_pk: student_pk
         },
         success: function (response) {
+            console.log(response);
             let sum_score = 0;
             response.forEach(i => {
                 let item = $('.question-item').filter(function() {

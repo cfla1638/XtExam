@@ -348,7 +348,8 @@ body {
 }
 
 .editor-form-control input:focus {
-    
+    outline: 0;
+    border-color: #777;
 }
 
 .editor-form-control small {
@@ -394,6 +395,8 @@ body {
 .prompt {
     width: 80%;
     height: 4em;
+    padding: 5px;
+    border-radius: 8px;
 
     background-color: #EFEFEF;
 }

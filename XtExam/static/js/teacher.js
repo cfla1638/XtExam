@@ -101,7 +101,7 @@ function init() {
             var errorMessage = "请求失败：" + error + xhr.responseText;
             notify(errorMessage);
             notify('即将返回登陆界面');
-            setTimeout(function() { window.location.href = '../login/' } , 3000)
+            setTimeout(function() { window.location.href = '../login/' } , 3000);
         }
     });
 

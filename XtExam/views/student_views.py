@@ -117,65 +117,137 @@ def class_exam(request, class_pk):
                 return HttpResponseBadRequest('用户未登录!')
         try:
             cur_class = XtExam_models.Class.objects.get(pk=int(class_pk))
-            cur_student = XtExam_models.UserProfile.objects.get(user=request.user)
         except XtExam_models.Class.DoesNotExist:
             return HttpResponseBadRequest('班级不存在!')
         user = request.user
+
         request_state = request.POST.get('state')
         if request_state is None:
             return HttpResponseBadRequest('非法请求, 缺少参数[state]')
         elif request_state == 'fetch_bulletin_text':
             return JsonResponse({'bulletin' : cur_class.bulletin})
-        elif request_state == 'fetch_exam_content':
-            exam_id = request.POST.get('exam_id')
-            if exam_id is None:
-                return HttpResponseBadRequest('非法请求, 缺少参数[exam_id]')
-            try:
-                exam = XtExam_models.Exam.objects.get(pk=int(exam_id), classIn=cur_class)
-            except XtExam_models.Exam.DoesNotExist:
-                return HttpResponseBadRequest('考试不存在!')
-            
-            # 在这里根据需要进行相应的处理，例如获取试卷信息等
-            exam_content = "这是试卷的内容"
-            
-            # 返回 JSON 响应
-            return JsonResponse({'exam_content': exam_content})
-        
         elif request_state == 'fetch_exam_list':
             exams = XtExam_models.Exam.objects.filter(classIn=cur_class)
-            data = {
-                'exams': [],
-                'participations': []
-            }
-            
-            for exam in exams:
+            data = []
+            for i in exams:
                 exam_item = {
-                    'pk': exam.pk,
-                    'name': exam.name
-                    # 其他属性...
+                    'pk': i.pk,
+                    'name': i.name
                 }
-                data['exams'].append(exam_item)
-                
-                # 获取学生参与情况
-                participations = XtExam_models.Participation.objects.filter(exam=exam, student=cur_student)
-                for participation in participations:
-                    participation_item = {
-                        'exam': participation.exam.pk,
-                        'state': participation.state
-                    }
-                    data['participations'].append(participation_item)
-            
+
+                part_exist = True
+                try:
+                    part_state = XtExam_models.Participation.objects.get(exam=i, student=user.profile)
+                except XtExam_models.Participation.DoesNotExist:
+                    part_exist = False
+                if part_exist:
+                    exam_item['state'] = 'True'
+                else:
+                    exam_item['state'] = 'False'
+                data.append(exam_item)
+            return JsonResponse(data, safe=False)
+        elif request_state == 'fetch_exam':
+            exam_pk = request.POST.get('exam_pk')
+            if exam_pk is None:
+                return HttpResponseBadRequest('非法请求, 缺少参数[exam_pk]')
+            try:
+                cur_exam = XtExam_models.Exam.objects.get(pk=exam_pk)
+            except XtExam_models.Exam.DoesNotExist:
+                return HttpResponseBadRequest('试卷不存在!')
+            data = {}
+            data['start_time'] = cur_exam.start_time
+            data['duration'] = cur_exam.duration
+
+            paper = cur_exam.paper
+            ques_list = []
+            for i in paper.questions.all():
+                ques_item = {}
+                ques_item['pk'] = i.pk
+                ques_item['type'] = i.type
+                ques_item['category'] = i.category
+                ques_item['prompt'] = i.prompt
+
+                ans_exist = True
+                try:
+                    ans = XtExam_models.Answer.objects.get(student=user.profile, exam=cur_exam, question=i)
+                except XtExam_models.Answer.DoesNotExist:
+                    ans_exist = False
+                if (ans_exist):
+                    ques_item['anspk'] = ans.pk
+                else:
+                    ques_item['anspk'] = ''
+                    ques_item['ans'] = ''
+
+                if i.type == 'MC':
+                    ques_item['options'] = i.options
+                    if (ans_exist):
+                        ques_item['ans'] = ans.choice_ans
+                elif i.type == 'MR':
+                    ques_item['options'] = i.options
+                    if (ans_exist):
+                        ques_item['ans'] = ans.choice_ans
+                elif i.type == 'FB':
+                    if (ans_exist):
+                        ques_item['ans'] = ans.text_ans
+                elif i.type == 'SB':
+                    if (ans_exist):
+                        ques_item['ans'] = ans.text_ans
+                ques_list.append(ques_item)
+            data['ques_list'] = ques_list
             return JsonResponse(data, safe=False)
     else:
         pass
     return render(request, 'class_exam.html')
 
 
-# def class_exam_view(request, class_id):
-#     # 根据 class_id 查询班级公告信息
-#     class_obj = XtExam_models.Class.objects.get(pk=class_id)
-#     bulletin = class_obj.bulletin
+def save_ans(request):
+    if request.method == 'POST':
+        user = request.user
+        if not request.user.is_authenticated:
+                return HttpResponseBadRequest('用户未登录!')
+        
+        json_data = json.loads(request.body.decode('utf-8'))
+        stu = user.profile
 
-#     # 将班级公告信息传递给模板引擎
-#     context = {'bulletin': bulletin}
-#     return render(request, 'class_exam.html', context)
+        try:
+            exam = XtExam_models.Exam.objects.get(pk=json_data['exam_pk'])
+        except XtExam_models.Exam.DoesNotExist:
+            return HttpResponseBadRequest('该场考试不存在!')
+        
+        try:
+            part = XtExam_models.Participation.objects.get(student=stu, exam=exam)
+        except XtExam_models.Participation.DoesNotExist:
+            part = XtExam_models.Participation()
+            part.student = stu
+            part.exam = exam
+            part.state = True
+            part.save()
+        
+        for i in json_data['ans_list']:
+            try:
+                ans = XtExam_models.Answer.objects.get(pk=i['ans_pk'])
+            except XtExam_models.Answer.DoesNotExist:
+                return HttpResponseBadRequest('作答不存在!')
+            except ValueError:  # i['ans_pk'] = ''
+                # 如果学生没有作答这道题
+                try:
+                    ques = XtExam_models.Question.objects.get(pk=i['ques_pk'])
+                except XtExam_models.Question.DoesNotExist:
+                    return HttpResponseBadRequest('题目pk={}，不存在!'.format(i['ques_pk']))
+                if len(i['ans_pk']) == 0:
+                    ans = XtExam_models.Answer()
+                    ans.student = stu
+                    ans.exam = exam
+                    ans.question = ques
+                    ans.achieved_score = 0
+                else:   # 非法pk
+                    return HttpResponseBadRequest('非法请求, 参数[ans_pk]格式错误')
+            if i['type'] == 'MC' or i['type'] == 'MR':
+                ans.choice_ans = i['ans']
+            else:
+                ans.text_ans = i['ans']
+            ans.ans_type = i['type']
+            ans.save()
+        return HttpResponse('保存成功!')
+    else:
+        return HttpResponseBadRequest('只允许POST请求!')
