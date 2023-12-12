@@ -147,6 +147,7 @@ def class_exam(request, class_pk):
                 data.append(exam_item)
             return JsonResponse(data, safe=False)
         elif request_state == 'fetch_exam':
+            logger.info(request.POST)
             exam_pk = request.POST.get('exam_pk')
             if exam_pk is None:
                 return HttpResponseBadRequest('非法请求, 缺少参数[exam_pk]')
@@ -209,7 +210,7 @@ def save_ans(request):
         
         json_data = json.loads(request.body.decode('utf-8'))
         stu = user.profile
-
+        logger.info(json_data)
         try:
             exam = XtExam_models.Exam.objects.get(pk=json_data['exam_pk'])
         except XtExam_models.Exam.DoesNotExist:

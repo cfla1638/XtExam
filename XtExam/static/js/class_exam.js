@@ -355,6 +355,112 @@ function init() {
             data: JSON.stringify(jsonData),
             success: function (response) {
                 notify(response);
+                $.ajax({
+                    type: 'POST',
+                    url: window.location.href,
+                    headers: { 'X-CSRFToken': csrfToken },
+                    data: {
+                        state: 'fetch_exam',
+                        exam_pk: cur_exam_pk
+                    },
+                    success: function (response) {
+                        console.log(response);
+                        if (!isTimeWithinEvent(response['start_time'], response['duration'])) {
+                            notify('当前时间不在考试时间范围内!');
+                        }
+                        else {
+                            // 渲染试卷
+                            $('.question-list').empty();
+                            response['ques_list'].forEach(i => {
+                                if (i['type'] == 'MC') {
+                                    $('.question-list').append(MC_item);
+                                    let new_item = $('.question-list > div:last');
+                                    new_item.attr('data-pk', i['pk']);
+                                    new_item.find('.prompt').text(i['prompt']);
+                                    new_item.attr('data-anspk', i['anspk']);
+                                    new_item.find('.form-ans').val(i['ans']);
+                
+                                    let str = i['options'];
+                                    let regex = /\[(\w+)\]\{([^}]+)\}\s*/g;
+                
+                                    let match;
+                                    while ((match = regex.exec(str)) !== null) {
+                                        var option = match[1];
+                                        var text = match[2];
+                
+                                        option += '. ';
+                                        new_item.find('.options').append(option_item);
+                                        let new_option = new_item.find('.options > div:last');
+                                        new_option.find('.option_label').text(option);
+                                        new_option.find('.option_text').text(text);
+                                    }
+                                }
+                                else if (i['type'] == 'MR') {
+                                    $('.question-list').append(MR_item);
+                                    let new_item = $('.question-list > div:last');
+                                    new_item.attr('data-pk', i['pk']);
+                                    new_item.find('.prompt').text(i['prompt']);
+                                    new_item.attr('data-anspk', i['anspk']);
+                                    new_item.find('.form-ans').val(i['ans']);
+                
+                                    let str = i['options'];
+                                    let regex = /\[(\w+)\]\{([^}]+)\}\s*/g;
+                
+                                    let match;
+                                    while ((match = regex.exec(str)) !== null) {
+                                        var option = match[1];
+                                        var text = match[2];
+                
+                                        option += '. ';
+                                        new_item.find('.options').append(option_item);
+                                        let new_option = new_item.find('.options > div:last');
+                                        new_option.find('.option_label').text(option);
+                                        new_option.find('.option_text').text(text);
+                                    }
+                                }
+                                else if (i['type'] == 'FB') {
+                                    $('.question-list').append(FB_item);
+                                    let new_item = $('.question-list > div:last');
+                                    new_item.attr('data-pk', i['pk']);
+                                    new_item.find('.prompt').text(i['prompt']);
+                                    new_item.attr('data-anspk', i['anspk']);
+
+                                    let str = i['blanks'];
+                                    let regex = /\[(\w+)\]\{([^}]+)\}\s*/g;
+                
+                                    let match;
+                                    while ((match = regex.exec(str)) !== null) {
+                                        new_item.find('.blank_list').append(blank_item);
+                                    }
+
+                                    str = i['ans'];
+                                    let ans_index = 0;
+                                    while ((match = regex.exec(str)) !== null) {
+                                        var option = match[1];
+                                        var text = match[2];
+                
+                                        new_item.find('.blank_list').children().eq(ans_index).val(text);
+                                        ans_index++;
+                                    }
+
+                                }
+                                else if (i['type'] == 'SB') {
+                                    console.log(i);
+                                    $('.question-list').append(SB_item);
+                                    let new_item = $('.question-list > div:last');
+                                    new_item.attr('data-pk', i['pk']);
+                                    new_item.find('.prompt').text(i['prompt']);
+                                    new_item.attr('data-anspk', i['anspk']);
+                                    new_item.find('.form-SB-ans').val(i['ans']);
+                                }
+                            });
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        var errorMessage = "请求失败：" + error + "\n" + xhr.responseText;
+                        notify(errorMessage);
+                    }
+                });
             },
             error: function (xhr, status, error) {
                 var errorMessage = "请求失败：" + error + "\n" + xhr.responseText;
