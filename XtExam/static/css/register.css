@@ -209,10 +209,6 @@ label {
     margin-bottom: 20px;
 }
 
-/* 针对特殊的元素 */
-
-
-
 .captcha-form {
     display: flex;
     flex-direction: column;

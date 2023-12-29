@@ -113,7 +113,7 @@ function init() {
         });
     })
 
-    $('.gotologin-submit').click(function(event) {
+    $('.gotologin-submit').click(function (event) {
         event.preventDefault();
         window.location.href = "../login/";
     });

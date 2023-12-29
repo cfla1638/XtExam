@@ -41,7 +41,7 @@ function update_class_list() {
                 new_item.find('.class_name').text(i['class_name']);
                 new_item.find('.teacher_name').text(i['teacher_name']);
                 new_item.find('.student_count').text(i['student_cnt'] + '人');
-                $('.class-item').click(function() {
+                $('.class-item').click(function () {
                     target_link = '../class_exam/' + $(this).attr('data-pk') + '/';
                     window.location.href = target_link;
                 });
@@ -53,8 +53,6 @@ function update_class_list() {
         }
     });
 }
-
-
 
 function notify(message) {
     var notificationContainer = $('#notification-container');
@@ -72,9 +70,7 @@ function notify(message) {
 
 const class_item = '<div class=\"class-item\" data-pk=\"\"><img src=\'/static/img/class_cover.jpg\' class=\'cover\'><div class=\'class_details\'><div class=\'class_name\'>很长的课程名称</div><div class=\'teacher_name\'>教师名称</div><div class=\'student_count\'>00人</div></div></div>';
 
-
 function init() {
-    
     // 取得用户信息
     $.ajax({
         type: 'POST',
@@ -102,7 +98,7 @@ function init() {
             var errorMessage = "请求失败：" + error + "\n" + xhr.responseText;
             notify(errorMessage);
             notify('即将返回登陆界面');
-            setTimeout(function() { window.location.href = '../login/' } , 3000);
+            setTimeout(function () { window.location.href = '../login/' }, 3000);
         }
     });
 
@@ -187,39 +183,31 @@ function init() {
         });
     });
 
-        // 监听表单提交事件
-    $('.join_class-form').submit(function(event) {
+    // 监听表单提交事件
+    $('.join_class-form').submit(function (event) {
         event.preventDefault(); // 阻止表单默认提交行为
-    
-        // 获取班级ID输入框的值
         var classId = $('#searchId').val();
-    
-        // 发送AJAX请求，查找班级信息
         $.ajax({
-        type: 'POST',
-        url: '../student/',
-        data: {
-            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
-            state: 'search',
-            classId: classId
-        },
-        success: function(response) {
-            // 操作成功
-            notify('学生添加成功！');
-            // 隐藏悬浮窗
-            update_class_list();
-            $('#overlay').fadeOut();
-            $('.floatingWindow').fadeOut();
-            $('#searchId').val('');
-        },
-        error: function(xhr, status, error) {
-            var errorMessage = "请求失败：" + error + "\n" + xhr.responseText;
-            notify(errorMessage);
-        }
+            type: 'POST',
+            url: '../student/',
+            data: {
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                state: 'search',
+                classId: classId
+            },
+            success: function (response) {
+                notify('学生添加成功！');
+                update_class_list();
+                $('#overlay').fadeOut();
+                $('.floatingWindow').fadeOut();
+                $('#searchId').val('');
+            },
+            error: function (xhr, status, error) {
+                var errorMessage = "请求失败：" + error + "\n" + xhr.responseText;
+                notify(errorMessage);
+            }
         });
     });
-
-    
 
     $('.finished-btn').click(function () {
         $('.status3').removeClass('show');
@@ -230,8 +218,6 @@ function init() {
 
     $('.profile-form').submit(function (event) {
         event.preventDefault();
-        // let student_name = $('#form-name').val();
-        // let student_motto = $('#form-motto').val();
         form_data = new FormData(this);
         form_data.append('state', 'edit_user_info')
 
@@ -300,5 +286,4 @@ function init() {
         $('.content-box').removeClass('show');
         $('.class_manage-box').addClass('show');
     });
-
 }

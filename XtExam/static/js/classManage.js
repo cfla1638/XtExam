@@ -75,7 +75,7 @@ function update_sidebar() {
                 new_item.find('img').attr('data-stuPK', i['pk']);
                 new_item.find('.student_name').text(i['name']);
             });
-            $('.student-item img').click(function() {
+            $('.student-item img').click(function () {
                 parent = $(this).parent();
                 $.ajax({
                     type: 'POST',
@@ -107,7 +107,7 @@ function get_url_prefix(url) {
     const pattern = /(.+\/)classManage/;
     const matches = url.match(pattern);
     if (matches && matches.length > 1) {
-      return matches[1];
+        return matches[1];
     }
     return null;
 }
@@ -128,7 +128,7 @@ function update_exam_list() {
                 new_item.attr('data-pk', i['pk']);
                 new_item.text(i['name']);
             });
-            $('.exam-item').click(function() {
+            $('.exam-item').click(function () {
                 window.location.href = get_url_prefix(window.location.href) + 'exam/' + $(this).attr('data-pk') + '/';
             });
         },
@@ -146,11 +146,11 @@ function init() {
         data: {
             csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
         },
-        success: function (response) {},
+        success: function (response) { },
         error: function (xhr, status, error) {
             if (xhr.responseText == '用户未登录!') {
                 notify('用户未登录, 即将返回登陆界面');
-                setTimeout(function() {window.location.href = get_url_prefix(window.location.href) + 'login/'}, 3000)
+                setTimeout(function () { window.location.href = get_url_prefix(window.location.href) + 'login/' }, 3000)
             }
         }
     });
@@ -169,7 +169,7 @@ function init() {
     $('.floating-plus').click(function () {
         $('#overlay').fadeIn();
         $('.publish_exam-window').fadeIn();
-        
+
         $.ajax({
             type: 'POST',
             url: window.location.href,
@@ -197,12 +197,12 @@ function init() {
         $('.publish_exam-window').fadeOut();
     });
 
-    $('.members_query-form').submit(function (event){
+    $('.members_query-form').submit(function (event) {
         event.preventDefault();
         let query_key = $('#form-members_query').val().trim();
         if (query_key.length == 0) {
             notify('查询不能为空!');
-            return ;
+            return;
         }
         $.ajax({
             type: 'POST',
@@ -231,7 +231,7 @@ function init() {
                         new_item.find('.student_name').text(i['name']);
                     });
 
-                    $('.members_query_res-container img').click(function() {
+                    $('.members_query_res-container img').click(function () {
                         method = $(this).attr('data-method')
                         parent = $(this).parent();
                         $.ajax({
@@ -264,30 +264,29 @@ function init() {
     });
 
     // 侧边栏
-    $('.settings-btn').click(function() {
+    $('.settings-btn').click(function () {
         $('.exam-box').removeClass('show');
         $('.exam-box').addClass('disabled');
         $('.settings-box').addClass('show');
         $('.settings-box').removeClass('disabled');
     });
 
-    $('#LOGO').click(function() {
+    $('#LOGO').click(function () {
         $('.settings-box').removeClass('show');
         $('.settings-box').addClass('disabled');
         $('.exam-box').addClass('show');
         $('.exam-box').removeClass('disabled');
     });
-    $('.exit-btn').click(function() {window.location.href = window.location.href.split('classManage')[0]+'teacher/';});
+    $('.exit-btn').click(function () { window.location.href = window.location.href.split('classManage')[0] + 'teacher/'; });
 
     update_sidebar();
-    
 
     // 主页
     update_bulletin();
 
     update_exam_list();
 
-    $('.publish_exam-form').submit(function(event) {
+    $('.publish_exam-form').submit(function (event) {
         event.preventDefault();
         let exam_title = $('#form-exam_name').val();
         let paper_pk = $('#form-paper').val();
@@ -300,10 +299,10 @@ function init() {
             data: {
                 csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
                 state: 'publish_exam',
-                exam_title : exam_title,
-                paper_pk : paper_pk,
-                start_time : start_time,
-                duration : duration
+                exam_title: exam_title,
+                paper_pk: paper_pk,
+                start_time: start_time,
+                duration: duration
             },
             success: function (response) {
                 update_exam_list();
@@ -323,7 +322,7 @@ function init() {
     });
 
     // 设置界面
-    $('.save-bulletin').click(function() {
+    $('.save-bulletin').click(function () {
         content = $('#edit-bulletin').val();
         $.ajax({
             type: 'POST',
@@ -331,7 +330,7 @@ function init() {
             data: {
                 csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
                 state: 'edit-bulletin',
-                content : content
+                content: content
             },
             success: function (response) {
                 update_bulletin();

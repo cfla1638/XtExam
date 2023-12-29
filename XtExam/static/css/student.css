@@ -345,9 +345,6 @@ body {
     flex-direction: column;
 }
 
-/* 班级管理页面 */
-.class_manage-box {}
-
 /* Profile-Box */
 .title-box {
     display: flex;

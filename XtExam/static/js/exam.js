@@ -73,7 +73,7 @@ function load_ans(student_pk) {
             console.log(response);
             let sum_score = 0;
             response.forEach(i => {
-                let item = $('.question-item').filter(function() {
+                let item = $('.question-item').filter(function () {
                     return $(this).attr('data-pk') == i['ques_pk'];
                 })
                 item.attr('data-anspk', i['pk']);
@@ -90,7 +90,7 @@ function load_ans(student_pk) {
                     while ((match = regex.exec(str)) !== null) {
                         var blk_label = match[1];
                         var blk_text = match[2];
-                        
+
                         blk_label += '. ';
                         blk_list.append(blank_item);
                         let new_blk = item.find('.blank_list > div:last');
@@ -194,7 +194,7 @@ function parse_exam_pk(url) {
     const pattern = /XtExam\/exam\/(\d+)\//;
     const matches = url.match(pattern);
     if (matches && matches.length > 1) {
-      return parseInt(matches[1]);
+        return parseInt(matches[1]);
     }
     return null;
 }
@@ -203,7 +203,7 @@ function get_url_prefix(url) {
     const pattern = /(.+\/)exam/;
     const matches = url.match(pattern);
     if (matches && matches.length > 1) {
-      return matches[1];
+        return matches[1];
     }
     return null;
 }
@@ -214,11 +214,11 @@ function init() {
         type: 'POST',
         url: window.location.href,
         headers: { 'X-CSRFToken': csrfToken },
-        success: function (response) {},
+        success: function (response) { },
         error: function (xhr, status, error) {
             if (xhr.responseText == '用户未登录!') {
                 notify('用户未登录, 即将返回登陆界面');
-                setTimeout(function() {window.location.href = get_url_prefix(window.location.href) + 'login/'}, 3000)
+                setTimeout(function () { window.location.href = get_url_prefix(window.location.href) + 'login/' }, 3000)
             }
         }
     });
@@ -232,7 +232,7 @@ function init() {
             state: 'get_class_pk'
         },
         success: function (response) {
-            $('.exit-btn').click(function() {
+            $('.exit-btn').click(function () {
                 window.location.href = get_url_prefix(window.location.href) + 'classManage/' + response['class_pk'] + '/';
             });
         },
@@ -258,7 +258,7 @@ function init() {
                     let new_item = $('.question-list > div:last');
                     new_item.attr('data-pk', i['pk']);
                     new_item.find('.prompt').text(i['prompt']);
-                    
+
 
                     let str = i['options'];
                     let regex = /\[(\w+)\]\{([^}]+)\}\s*/g;
@@ -267,7 +267,7 @@ function init() {
                     while ((match = regex.exec(str)) !== null) {
                         var option = match[1];
                         var text = match[2];
-                        
+
                         option += '. ';
                         new_item.find('.options').append(option_item);
                         let new_option = new_item.find('.options > div:last');
@@ -288,7 +288,7 @@ function init() {
                     while ((match = regex.exec(str)) !== null) {
                         var option = match[1];
                         var text = match[2];
-                        
+
                         option += '. ';
                         new_item.find('.options').append(option_item);
                         let new_option = new_item.find('.options > div:last');
@@ -311,15 +311,15 @@ function init() {
                 }
 
                 // 绑定计算试卷总分
-                $('.form-score').on('input', function() {
+                $('.form-score').on('input', function () {
                     let sum = 0;
-            
-                    $('.form-score').each(function() {
+
+                    $('.form-score').each(function () {
                         let val = parseInt($(this).val());
                         if (!(isNaN(val)))
                             sum += val;
                     });
-            
+
                     $('.sum_score').text(sum);
                 });
             });
@@ -331,7 +331,7 @@ function init() {
     });
 
     // 保存批改结果
-    $('.floating-save').click(function() {
+    $('.floating-save').click(function () {
         let jsonData = {};
         jsonData['exam_pk'] = parse_exam_pk(window.location.href);
         jsonData['stu_pk'] = cur_selected.attr('data-pk');
@@ -341,7 +341,7 @@ function init() {
             ques_item['ques_pk'] = $(this).attr('data-pk');
             ques_item['ans_pk'] = $(this).attr('data-anspk');
             ques_item['score'] = $(this).find('.form-score').val();
-            ans_list.push(ques_item);            
+            ans_list.push(ques_item);
         });
         jsonData['ans_list'] = ans_list;
         let csrfToken = Cookies.get('csrftoken');

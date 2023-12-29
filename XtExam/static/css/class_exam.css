@@ -135,7 +135,6 @@ body {
     z-index: 0;
 }
 
-
 /* content-box */
 .bulletin-board {
     height: 30vh;
@@ -301,7 +300,6 @@ body {
 .exam-header {
     width: 100%;
     min-height: 15vh;
-
 
     display: flex;
     flex-direction: row;

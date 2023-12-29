@@ -1,17 +1,13 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
-from datetime import datetime, timedelta
-import XtExam.models as XtExam_models
-from django.core import serializers
+from django.contrib.auth import logout
 from django.core.files.storage import default_storage
+from datetime import datetime, timedelta
 import uuid
 import os
 import json
-
 import logging
-import validators
+import XtExam.models as XtExam_models
 import XtExam.views.my_validators as my_validators
 import XtExam.models as XtExam_models
 

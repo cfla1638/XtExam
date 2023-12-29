@@ -97,7 +97,7 @@ function init() {
         let repeatpsd = $('#repeatpsd').val();
         if (password != repeatpsd) {
             notify('密码前后不一致, 请重新输入!');
-            return ;
+            return;
         }
         $.ajax({
             type: 'POST',
@@ -121,7 +121,7 @@ function init() {
         });
     })
 
-    $('.gotologin-submit').click(function(event) {
+    $('.gotologin-submit').click(function (event) {
         event.preventDefault();
         window.location.href = "../login/";
     });

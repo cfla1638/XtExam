@@ -70,7 +70,7 @@ function update_bulletin() {
             var errorMessage = "请求失败：" + error + "\n" + xhr.responseText;
             notify(errorMessage);
             notify('即将返回登陆界面');
-            setTimeout(function() { window.location.href = get_url_prefix(window.location.href) + 'login/' } , 3000);
+            setTimeout(function () { window.location.href = get_url_prefix(window.location.href) + 'login/' }, 3000);
         }
     });
 }
@@ -146,7 +146,7 @@ function parseDuration(duration) {
 
 function calculateEndTime(startTime, duration) {
     var eventStartTime = new Date(startTime); // 将开始时间转换为Date对象
-  
+
     // 解析持续时间
     var durationRegex = /P(\d+)DT(\d+)H(\d+)M(\d+)S/;
     var matches = duration.match(durationRegex);
@@ -154,12 +154,12 @@ function calculateEndTime(startTime, duration) {
     var hours = parseInt(matches[2]);
     var minutes = parseInt(matches[3]);
     var seconds = parseInt(matches[4]);
-  
+
     // 根据持续时间计算结束时间
     var endTime = new Date(eventStartTime.getTime() + (days * 24 * 60 * 60 + hours * 60 * 60 + minutes * 60 + seconds) * 1000);
-  
+
     return endTime;
-  }
+}
 
 function bind_exam_item() {
     let csrfToken = Cookies.get('csrftoken');
@@ -194,15 +194,15 @@ function bind_exam_item() {
                             new_item.find('.prompt').text(i['prompt']);
                             new_item.attr('data-anspk', i['anspk']);
                             new_item.find('.form-ans').val(i['ans']);
-        
+
                             let str = i['options'];
                             let regex = /\[(\w+)\]\{([^}]+)\}\s*/g;
-        
+
                             let match;
                             while ((match = regex.exec(str)) !== null) {
                                 var option = match[1];
                                 var text = match[2];
-        
+
                                 option += '. ';
                                 new_item.find('.options').append(option_item);
                                 let new_option = new_item.find('.options > div:last');
@@ -217,15 +217,15 @@ function bind_exam_item() {
                             new_item.find('.prompt').text(i['prompt']);
                             new_item.attr('data-anspk', i['anspk']);
                             new_item.find('.form-ans').val(i['ans']);
-        
+
                             let str = i['options'];
                             let regex = /\[(\w+)\]\{([^}]+)\}\s*/g;
-        
+
                             let match;
                             while ((match = regex.exec(str)) !== null) {
                                 var option = match[1];
                                 var text = match[2];
-        
+
                                 option += '. ';
                                 new_item.find('.options').append(option_item);
                                 let new_option = new_item.find('.options > div:last');
@@ -242,7 +242,7 @@ function bind_exam_item() {
 
                             let str = i['blanks'];
                             let regex = /\[(\w+)\]\{([^}]+)\}\s*/g;
-        
+
                             let match;
                             while ((match = regex.exec(str)) !== null) {
                                 new_item.find('.blank_list').append(blank_item);
@@ -253,7 +253,7 @@ function bind_exam_item() {
                             while ((match = regex.exec(str)) !== null) {
                                 var option = match[1];
                                 var text = match[2];
-        
+
                                 new_item.find('.blank_list').children().eq(ans_index).val(text);
                                 ans_index++;
                             }
@@ -299,7 +299,7 @@ function init() {
     update_exam_list();
 
     // 绑定返回按钮
-    $('.back-button').click(function() {
+    $('.back-button').click(function () {
         $('.exam-content').removeClass('show');
         $('.exam-content').addClass('disabled');
         $('.exam-box').removeClass('disabled');
@@ -310,7 +310,7 @@ function init() {
     });
 
     // 绑定保存按钮
-    $('.floating-save').click(function () {    
+    $('.floating-save').click(function () {
         let jsonData = {};
         jsonData['exam_pk'] = cur_exam_pk;
         ans_list = [];
@@ -318,7 +318,7 @@ function init() {
             let ques_item = {};
             ques_item['ques_pk'] = $(this).attr('data-pk');
             ques_item['ans_pk'] = $(this).attr('data-anspk');
-            
+
             if ($(this).hasClass('MC')) {
                 ques_item['type'] = 'MC';
                 ques_item['ans'] = $(this).find('.form-ans').val();
@@ -331,7 +331,7 @@ function init() {
                 ques_item['type'] = 'FB';
                 let blank_ans = '';
                 let blank_cnt = 1;
-                $(this).find('.blank_list').children().each(function() {
+                $(this).find('.blank_list').children().each(function () {
                     blank_ans += ('[' + blank_cnt + ']' + '{' + $(this).val() + '}');
                     blank_cnt++;
                 });
@@ -379,15 +379,15 @@ function init() {
                                     new_item.find('.prompt').text(i['prompt']);
                                     new_item.attr('data-anspk', i['anspk']);
                                     new_item.find('.form-ans').val(i['ans']);
-                
+
                                     let str = i['options'];
                                     let regex = /\[(\w+)\]\{([^}]+)\}\s*/g;
-                
+
                                     let match;
                                     while ((match = regex.exec(str)) !== null) {
                                         var option = match[1];
                                         var text = match[2];
-                
+
                                         option += '. ';
                                         new_item.find('.options').append(option_item);
                                         let new_option = new_item.find('.options > div:last');
@@ -402,15 +402,15 @@ function init() {
                                     new_item.find('.prompt').text(i['prompt']);
                                     new_item.attr('data-anspk', i['anspk']);
                                     new_item.find('.form-ans').val(i['ans']);
-                
+
                                     let str = i['options'];
                                     let regex = /\[(\w+)\]\{([^}]+)\}\s*/g;
-                
+
                                     let match;
                                     while ((match = regex.exec(str)) !== null) {
                                         var option = match[1];
                                         var text = match[2];
-                
+
                                         option += '. ';
                                         new_item.find('.options').append(option_item);
                                         let new_option = new_item.find('.options > div:last');
@@ -427,7 +427,7 @@ function init() {
 
                                     let str = i['blanks'];
                                     let regex = /\[(\w+)\]\{([^}]+)\}\s*/g;
-                
+
                                     let match;
                                     while ((match = regex.exec(str)) !== null) {
                                         new_item.find('.blank_list').append(blank_item);
@@ -438,7 +438,7 @@ function init() {
                                     while ((match = regex.exec(str)) !== null) {
                                         var option = match[1];
                                         var text = match[2];
-                
+
                                         new_item.find('.blank_list').children().eq(ans_index).val(text);
                                         ans_index++;
                                     }

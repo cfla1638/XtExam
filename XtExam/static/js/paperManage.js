@@ -58,9 +58,9 @@ function ques_type_transform(src) {
 }
 
 function bind_ques_item() {
-    $('.question-item').filter(function() {
+    $('.question-item').filter(function () {
         return $(this).data('oldValue') === undefined;
-      }).data('oldValue', 'MC');
+    }).data('oldValue', 'MC');
     $('.ques_type').change(function () {
         let ques_item = $(this).parent().parent().parent().parent();
         let cur_val = $(this).val();
@@ -75,7 +75,7 @@ function bind_ques_item() {
         new_form.addClass('show');
         new_form.removeClass('disabled');
     });
-    $('.remove_paper').click(function() {
+    $('.remove_paper').click(function () {
         $(this).parent().parent().remove();
     })
 }
@@ -126,7 +126,7 @@ function load_paper(paper_pk) {
                     new_form.removeClass('disabled');
                     new_form.addClass('show');
                     activated_form = new_form;
-                    
+
                     activated_form.find('.ques_prompt').val(i.prompt);
                     activated_form.find('.ques_category').val(i.category);
                     activated_form.find('.ques_options').val(i.options);
@@ -265,7 +265,6 @@ function update_paper_list() {
 }
 
 function init() {
-
     // 判断是否登录
     $.ajax({
         type: 'POST',
@@ -273,11 +272,11 @@ function init() {
         data: {
             csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
         },
-        success: function (response) {},
+        success: function (response) { },
         error: function (xhr, status, error) {
             if (xhr.responseText == '用户未登录!') {
                 notify('用户未登录, 即将返回登陆界面');
-                setTimeout(function() {window.location.href = '../login/'}, 3000)
+                setTimeout(function () { window.location.href = '../login/' }, 3000)
             }
         }
     });
@@ -303,14 +302,14 @@ function init() {
         });
     });
 
-    $('.exit-btn').click(function() {
+    $('.exit-btn').click(function () {
         window.location.href = '../teacher/';
     });
 
     // 悬浮窗口
     $('.floating-save').click(function () {
         paper_pk = cur_selected?.find('img').attr('data-pk');
-        
+
         let jsonData = {};
         jsonData['paper_pk'] = paper_pk;
         jsonData['header'] = { 'title': $('#paper_header_title').val(), 'tips': $('#paper_header_tips').val() };
@@ -366,7 +365,6 @@ function init() {
 
     // Editor
     bind_ques_item();
-
 
     $(".question-list").sortable();
     $(".question-list").disableSelection();

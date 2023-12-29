@@ -139,7 +139,6 @@ body {
     cursor: pointer;
 }
 
-
 .student_list {
     width: 210px;
     height: 60vh;
@@ -325,7 +324,6 @@ body {
     align-items: center;
 }
 
-
 /* editor特供form-control */
 .editor-form-control {
     margin-bottom: 10px;
@@ -454,7 +452,6 @@ body {
     outline: 0;
     border-color: #777;
 }
-
 
 /*悬浮的保存*/
 .floating-save {

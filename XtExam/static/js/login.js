@@ -38,13 +38,13 @@ function notify(message) {
 }
 
 function init() {
-    $(document).ready(function() {
+    $(document).ready(function () {
         let current_index = 0;
         let slides = $('.slides img');
         let total_slides = slides.length
-    
+
         slides.eq(current_index).addClass('active');
-        setInterval(function() {
+        setInterval(function () {
             slides.eq(current_index).removeClass('active');
             current_index = (current_index + 1) % total_slides;
             slides.eq(current_index).addClass('active');
@@ -57,11 +57,11 @@ function init() {
             type: 'POST',
             url: '../login/',
             data: $('.login-form').serialize(),
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 var errorMessage = "请求失败：" + xhr.responseText;
                 notify(errorMessage);
             },
-            success: function(response) {
+            success: function (response) {
                 if ('role' in response) {
                     if (response['role'] == 'T') {
                         notify('欢迎教师登录!')

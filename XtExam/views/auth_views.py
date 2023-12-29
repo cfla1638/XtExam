@@ -1,18 +1,17 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
-from django.forms import ValidationError
-from ..forms import LoginForm
 from django.core.mail import send_mail
 from django.contrib.auth.models import User
-from datetime import datetime, timedelta
-import XtExam.models as XtExam_models
 import django.contrib.auth as auth
+from datetime import datetime, timedelta
 import logging
 import validators
-import XtExam.views.my_validators as my_validators
 import random
+from ..forms import LoginForm
+import XtExam.models as XtExam_models
+import XtExam.views.my_validators as my_validators
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)    # 日志
 
 def index(request):
     return redirect('./login/')
@@ -53,7 +52,8 @@ def passwordRecovery(request):
                 request.session['captcha'] = captcha
                 request.session['last_sent'] = datetime.now().timestamp()
                 request.session['email'] = email_addr
-                logger.info(captcha)
+                logger.info(captcha)    # 将验证码写入到日志中
+                # 这段代码用于发送验证码到邮箱中
                 # send_mail(
                 #     subject='Captcha - XtExam',
                 #     message=captcha,
@@ -65,7 +65,7 @@ def passwordRecovery(request):
             else:
                 return HttpResponseBadRequest('邮箱格式错误!')
         elif request_state == 'resend_captcha':
-            pass
+            pass    # TODO 重新发送验证码
         elif request_state == 'verify_captcha':
             tobeverified = request.POST.get('captcha')
             captcha = request.session.get('captcha')

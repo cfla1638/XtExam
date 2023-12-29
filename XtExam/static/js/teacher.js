@@ -56,7 +56,7 @@ function update_class_list() {
                 new_item.find('.class_name').text(i['class_name']);
                 new_item.find('.teacher_name').text(i['teacher_name']);
                 new_item.find('.student_count').text(i['student_cnt'] + '人');
-                $('.class-item').click(function() {
+                $('.class-item').click(function () {
                     target_link = '../classManage/' + $(this).attr('data-pk') + '/';
                     window.location.href = target_link;
                 });
@@ -70,7 +70,7 @@ function update_class_list() {
 }
 
 function init() {
-    $('.exampaper_manage-btn').click(function() {
+    $('.exampaper_manage-btn').click(function () {
         window.location.href = '../paperManage/';
     });
 
@@ -101,7 +101,7 @@ function init() {
             var errorMessage = "请求失败：" + error + xhr.responseText;
             notify(errorMessage);
             notify('即将返回登陆界面');
-            setTimeout(function() { window.location.href = '../login/' } , 3000);
+            setTimeout(function () { window.location.href = '../login/' }, 3000);
         }
     });
 
@@ -135,7 +135,7 @@ function init() {
         });
     });
 
-    $('.sidebar img').click(function() {
+    $('.sidebar img').click(function () {
         if ($('.class_manage-box').hasClass('show')) {
             $('.class_manage-box').removeClass('show');
             $('.class_manage-box').addClass('disabled');
@@ -184,8 +184,6 @@ function init() {
 
     $('.profile-form').submit(function (event) {
         event.preventDefault();
-        // let teacher_name = $('#form-name').val();
-        // let teacher_motto = $('#form-motto').val();
         form_data = new FormData(this);
         form_data.append('state', 'edit_user_info')
 
@@ -245,7 +243,7 @@ function init() {
         }
     });
 
-    $('.create_class-form').submit(function(event) {
+    $('.create_class-form').submit(function (event) {
         event.preventDefault();
         let class_name = $('#form-class_name').val();
         $.ajax({
@@ -253,7 +251,7 @@ function init() {
             url: '../teacher/',
             data: {
                 csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
-                state: 'create_class', 
+                state: 'create_class',
                 class_name: class_name
             },
             success: function (response) {
