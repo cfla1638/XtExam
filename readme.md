@@ -73,7 +73,7 @@ XtExam (学拓考试系统)是一个类似学习通的系统，是学习通的�
 
 数据库 E-R图
 
-![数据库ER](https://cdn.jsdelivr.net/gh/cfla1638/Img/202312291124855.png) 
+![数据库ER](./assets/202312291124855.png) 
 
 关系模式：
 
@@ -108,8 +108,8 @@ Participation(exam_id, user_id(type=stu), state)
 
 ## 概要设计
 
-![用例图](https://cdn.jsdelivr.net/gh/cfla1638/Img/202312291131324.png)
+![用例图](./assets/202312291131324.png)
 
-![Rose](https://cdn.jsdelivr.net/gh/cfla1638/Img/202312291131476.png)
+![Rose](./assets/202312291131476.png)
 
  
